@@ -84,6 +84,23 @@ tr:nth-child(even) td{background:var(--bg);}
 .overdue{color:var(--amber);font-weight:700;}
 .tiny{font-size:12px;color:var(--muted);}
 .flexb{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+
+/* STATUS DOT STYLING */
+.status-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.status-dot.active {
+  background-color: #10B981; /* Green */
+  box-shadow: 0 0 6px #10B981;
+}
+.status-dot.inactive {
+  background-color: #EF4444; /* Red */
+  box-shadow: 0 0 6px #EF4444;
+}
 </style>
   </head>
   <body>
@@ -97,7 +114,9 @@ tr:nth-child(even) td{background:var(--bg);}
           </div>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="btn btn-o btn-sm" onclick="syncFromFirestore(true)">🔄 Sync Cloud</button>
+          <button class="btn btn-o btn-sm" onclick="syncFromFirestore(true)">
+            <span id="cloudStatusDot" class="status-dot inactive"></span> 🔄 Sync Cloud
+          </button>
           <button class="btn btn-o btn-sm" onclick="backupData()">⬇ Backup</button>
           <button class="btn btn-o btn-sm" onclick="document.getElementById('restoreFile').click()">⬆ Restore</button>
           <input type="file" id="restoreFile" accept="application/json" style="display:none" onchange="restoreData(this)" />
@@ -119,6 +138,7 @@ tr:nth-child(even) td{background:var(--bg);}
     </div>
     <div class="toast" id="toast">
     </div>
+
     <!-- FIREBASE MODULE SETUP -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -149,11 +169,25 @@ tr:nth-child(even) td{background:var(--bg);}
         window.syncFromFirestore();
       }
     </script>
+
     <!-- MAIN APP LOGIC -->
     <script>
 /* ============ RESILIENT STORAGE & FIREBASE SYNC ============ */
 const LS_P="vishwa_patients", LS_C="vishwa_counter";
 const memoryStorage = {};
+
+function setCloudStatus(isActive) {
+  const dot = document.getElementById("cloudStatusDot");
+  if (dot) {
+    if (isActive) {
+      dot.className = "status-dot active";
+      dot.title = "Cloud Storage Active";
+    } else {
+      dot.className = "status-dot inactive";
+      dot.title = "Cloud Storage Offline";
+    }
+  }
+}
 
 function safeGetItem(key) {
   try {
@@ -183,27 +217,40 @@ function savePatients(p){
   if (window.db && window.fs) {
     p.forEach(patient => {
       window.fs.setDoc(window.fs.doc(window.db, "patients", patient.patient_id), patient, { merge: true })
-        .catch(err => console.error("Firestore sync error:", err));
+        .then(() => setCloudStatus(true))
+        .catch(err => {
+          console.error("Firestore sync error:", err);
+          setCloudStatus(false);
+        });
     });
+  } else {
+    setCloudStatus(false);
   }
 }
 
 async function syncFromFirestore(notify = false) {
-  if (!window.db || !window.fs) return;
+  if (!window.db || !window.fs) {
+    setCloudStatus(false);
+    return;
+  }
   try {
     const querySnapshot = await window.fs.getDocs(window.fs.collection(window.db, "patients"));
     const remotePatients = [];
     querySnapshot.forEach((doc) => {
       remotePatients.push(doc.data());
     });
+    
+    setCloudStatus(true); // Green dot when successful
+
     if (remotePatients.length > 0) {
       safeSetItem(LS_P, JSON.stringify(remotePatients));
       render();
-      if (notify) toast("Synced with Cloud Firestore");
     }
+    if (notify) toast("Synced with Cloud Firestore");
   } catch (err) {
     console.error("Error pulling from Firestore:", err);
-    if (notify) toast("Cloud sync failed (check internet)");
+    setCloudStatus(false); // Red dot when error occurs
+    if (notify) toast("Cloud sync failed (check internet or rules)");
   }
 }
 
@@ -309,7 +356,7 @@ function growthHTML(p){
 let TAB="staff", STAFF_SUB="register", selPid=null, treatCtx=null;
 const EXAM=[["respiratory","Respiratory System"],["cvs","CVS System"],["abdominal","Abdominal System"],["opthal_ent","Opthal / ENT"],["cns","CNS System"],["others","Others"]];
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1800); }
+function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2500); }
 function emptyVisit(){ return {id:uid(),date_of_visit:todayISO(),visit_type:"fresh",patient_category:"new",status:"waiting",ht:"",wt:"",hc:"",bp:"",vaccination:[],complaints:"",examination:{respiratory:"",cvs:"",abdominal:"",opthal_ent:"",cns:"",others:""},treatment:"",created_at:new Date().toISOString()}; }
 function getP(pid){ return loadPatients().find(p=>p.patient_id===pid); }
 function updateP(pid,fn){ const arr=loadPatients(); const i=arr.findIndex(p=>p.patient_id===pid); if(i<0)return; fn(arr[i]); savePatients(arr); }
@@ -360,17 +407,44 @@ function registerForm(){
     <div class="right mt"><button class="btn btn-p" onclick="doRegister()">💾 Register Patient</button></div>
   </div>`;
 }
+
 function doRegister(){
   const name=val("r_name"),sex=val("r_sex"),dob=val("r_dob");
   const ag=readAge("r_age",dob);
   if(!name||!ag.age||!sex){ toast("Name, Age and Sex are required"); return; }
-  const v=emptyVisit(); v.date_of_visit=val("r_dov")||todayISO(); v.ht=val("r_ht");v.wt=val("r_wt");v.hc=val("r_hc");v.bp=val("r_bp");
+  
+  const v=emptyVisit(); 
+  v.date_of_visit=val("r_dov")||todayISO(); 
+  v.ht=val("r_ht");
+  v.wt=val("r_wt");
+  v.hc=val("r_hc");
+  v.bp=val("r_bp");
+  
   const pid=nextId();
-  const patient={patient_id:pid,name,age:ag.age,sex,phone:val("r_phone"),dob,age_recorded_at:dob?"":todayISO(),visits:[v],vaccinations:dob?buildSchedule(dob):[],next_vaccination:null,created_at:new Date().toISOString()};
-  const arr=loadPatients(); arr.push(patient); savePatients(arr);
-  toast("Registered • ID "+pid+" • Sent to doctor");
-  STAFF_SUB="register"; render();
+  const patient={
+    patient_id:pid,
+    name,
+    age:ag.age,
+    sex,
+    phone:val("r_phone"),
+    dob,
+    age_recorded_at:dob?"":todayISO(),
+    visits:[v],
+    vaccinations:dob?buildSchedule(dob):[],
+    next_vaccination:null,
+    created_at:new Date().toISOString()
+  };
+  
+  const arr=loadPatients(); 
+  arr.push(patient); 
+  savePatients(arr);
+  
+  toast(`${name} - ${pid} registered`);
+  
+  STAFF_SUB="register"; 
+  render();
 }
+
 function existingView(){
   return `<div class="card">
     <div style="display:flex;gap:12px"><input id="s_q" placeholder="Search by Patient ID (e.g. 0001/26), name or phone" onkeydown="if(event.key==='Enter')doSearch()"/><button class="btn btn-p" onclick="doSearch()">🔍 Search</button></div>
