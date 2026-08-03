@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vishwa Hospital — Vibrant & Cloud Synced</title>
+    <title>Vishwa Hospital — Cloud Synced & Resilient</title>
     <style>
 :root {
   --primary: #4F46E5;
@@ -386,6 +386,7 @@ tr:nth-child(even) td { background: #F8FAFC; }
         <button class="tab active" data-tab="staff" onclick="setTab('staff')">📋 Staff Module</button>
         <button class="tab" data-tab="doctor" onclick="setTab('doctor')">🩺 Doctor Module</button>
         <button class="tab" data-tab="reports" onclick="setTab('reports')">📊 Reports</button>
+        <button class="tab" data-tab="settings" onclick="setTab('settings')">⚙️ Settings</button>
       </div>
       <div id="view">
       </div>
@@ -463,6 +464,14 @@ function safeSetItem(key, value) {
   } catch (e) {
     console.warn("localStorage blocked, saving to memory storage.");
     memoryStorage[key] = value;
+  }
+}
+
+function safeRemoveItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    delete memoryStorage[key];
   }
 }
 
@@ -610,7 +619,7 @@ function growthHTML(p){
     out+=svgChart("Weight-for-age","kg","Age (months)","#10B981",xs,band("weight"),w);
     out+=svgChart("Height/Length-for-age","cm","Age (months)","#4F46E5",xs,band("height"),h);
     if(hc.length)out+=svgChart("Head circumference-for-age","cm","Age (months)","#F59E0B",xs,band("headcirc"),hc);
-    if(wfh.length){ const wb={P3:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P3,x)),P50:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P50,x)),P97:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P97,x))}; out+=svgChart("Weight-for-height","kg","Height (cm)","#8B5CF6",WFH_HEIGHTS,wb,wfh); }
+    if(wfh.length){ const wb={P3:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P3,x)),P50:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P97,x)),P97:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P97,x))}; out+=svgChart("Weight-for-height","kg","Height (cm)","#8B5CF6",WFH_HEIGHTS,wb,wfh); }
     return out;
   }
   const data=visits.map(v=>({d:(v.date_of_visit||"").slice(5),h:num(v.ht),w:num(v.wt)})).filter(x=>x.h!=null||x.w!=null);
@@ -630,7 +639,7 @@ function updateP(pid,fn){ const arr=loadPatients(); const i=arr.findIndex(p=>p.p
 
 /* ============ TABS NAVIGATION ============ */
 function setTab(t){ TAB=t; document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t)); render(); }
-function render(){ const v=document.getElementById("view"); if(TAB==="staff")v.innerHTML=staffView(); else if(TAB==="doctor")v.innerHTML=doctorView(); else v.innerHTML=reportsView(); afterRender(); }
+function render(){ const v=document.getElementById("view"); if(TAB==="staff")v.innerHTML=staffView(); else if(TAB==="doctor")v.innerHTML=doctorView(); else if(TAB==="reports")v.innerHTML=reportsView(); else v.innerHTML=settingsView(); afterRender(); }
 
 /* ============ AGE FORM FIELD ============ */
 function ageFieldHTML(prefix,dob,age){
@@ -743,9 +752,10 @@ function selectedCard(p){
   </div>`;
 }
 
+// DELETION PASSWORD: 654321
 async function deletePatient(pid){
-  const pw = prompt("Enter password to delete this patient record:");
-  if (pw !== "123456") {
+  const pw = prompt("Enter Settings Password (654321) to delete this record:");
+  if (pw !== "654321") {
     if (pw !== null) toast("Incorrect password - deletion cancelled");
     return;
   }
@@ -784,8 +794,95 @@ function alertsView(){
 function statusBadge(r){ if(r.status==="overdue")return `<span class="pill" style="background:#FEE2E2;color:#B91C1C">${r.days} days overdue</span>`; if(r.status==="due_today")return `<span class="pill p-followup">Due today</span>`; return `<span class="pill p-subsequent">Due in ${-r.days} days</span>`; }
 function computeOverdue(){
   const today=parseD(todayISO()), horizon=addOffset(today,"day",7); const out=[];
-  loadPatients().forEach(p=>{ const nv=p.next_vaccination; if(!nv||!nv.due_date)return; const due=parseD(nv.due_date); if(!due||due>horizon)return; const days=Math.round((today-due)/(1000*60*60*24)); out.push({patient_id:p.patient_id,name:p.name,phone:p.phone,vaccine:nv.vaccine,note:nv.note,due_date:nv.due_date,days,status:due<today?"overdue":(+due===+today?"due_today":"upcoming")}); });
+  loadPatients().forEach(p=>{ const nv=p.next_vaccination; if(!nv||!nv.due_date)return; const due=parseD(nv.due_date); if(!due||due>horizon)return; const days=Math.round((today-due)/(1000*60*60*24)); out.push({patient_id:p.patient_id,name:p.name,phone:p.phone,vaccine:nv.vaccine,note:nv.note,due_date:nv.due_date,days,status:due<today?"overdue":(+due===+today:"due_today":"upcoming")}); });
   out.sort((a,b)=>b.days-a.days); return out;
+}
+
+/* ============ SETTINGS MODULE & FACTORY RESET ============ */
+let SETTINGS_UNLOCKED = false;
+
+function settingsView() {
+  if (!SETTINGS_UNLOCKED) return `<div class="card" style="max-width:420px;margin:30px auto;text-align:center">
+    <div style="font-size:30px">⚙️</div><h3>Settings & Management</h3><p class="sub">Enter password to access deletion & database reset features.</p>
+    <input id="settings_pw" type="password" placeholder="Password (654321)" style="text-align:center" onkeydown="if(event.key==='Enter')unlockSettings()"/>
+    <div class="mt"><button class="btn btn-p" style="width:100%" onclick="unlockSettings()">Unlock Settings</button></div></div>`;
+
+  return `<div class="card">
+    <h3>⚙️ Database & Patient Management</h3>
+    <p class="sub">Manage patient records or perform database administrative actions.</p>
+    
+    <div class="divider"></div>
+    
+    <div style="margin-bottom: 24px;">
+      <h4 style="margin:0 0 6px;color:#1E1B4B">🔍 Delete Individual Patient</h4>
+      <p class="tiny">Search for a patient by ID or name to delete their record locally and from Cloud Firestore.</p>
+      <div style="display:flex;gap:12px;margin-top:10px;">
+        <input id="set_del_q" placeholder="Enter Patient ID (e.g. 0001/26) or Name" onkeydown="if(event.key==='Enter')searchDeletePatient()"/>
+        <button class="btn btn-p" onclick="searchDeletePatient()">Search</button>
+      </div>
+      <div id="set_del_results" class="mt"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="background:#FEF2F2;border:1px solid #FCA5A5;padding:20px;border-radius:14px;">
+      <h4 style="margin:0 0 6px;color:#991B1B">🚨 Factory Reset Database</h4>
+      <p class="tiny" style="color:#7F1D1D">Warning: This action will permanently erase ALL patient records, visit histories, and counter sequences from BOTH local browser memory and Cloud Firestore!</p>
+      <div class="mt"><button class="btn btn-danger" onclick="factoryResetDatabase()">🚨 Perform Factory Reset</button></div>
+    </div>
+  </div>`;
+}
+
+function unlockSettings() {
+  if (val("settings_pw") === "654321") {
+    SETTINGS_UNLOCKED = true;
+    render();
+  } else {
+    toast("Incorrect password (use 654321)");
+  }
+}
+
+function searchDeletePatient() {
+  const q = val("set_del_q").trim().toLowerCase();
+  const res = loadPatients().filter(p => !q || p.patient_id.toLowerCase().includes(q) || (p.name || "").toLowerCase().includes(q));
+  const el = document.getElementById("set_del_results");
+  if (!res.length) { el.innerHTML = `<p class="tiny">No matching patient found.</p>`; return; }
+  el.innerHTML = res.map(p => `<div class="qcard">
+    <div><b>${esc(p.name)}</b> <span class="badge mono">${p.patient_id}</span><div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)}</div></div>
+    <button class="btn btn-danger btn-sm" onclick="deletePatient('${p.patient_id}')">🗑️ Delete</button>
+  </div>`).join("");
+}
+
+async function factoryResetDatabase() {
+  const pw = prompt("SECURITY CONFIRMATION: Re-enter password (654321) to confirm Factory Reset:");
+  if (pw !== "654321") {
+    if (pw !== null) toast("Incorrect password - Reset aborted");
+    return;
+  }
+
+  if (!confirm("CRITICAL WARNING: Are you ABSOLUTELY sure? ALL local and cloud data will be destroyed forever!")) return;
+
+  // 1. Clear Local Storage
+  safeRemoveItem(LS_P);
+  safeRemoveItem(LS_C);
+
+  // 2. Clear Cloud Firestore
+  if (window.db && window.fs) {
+    try {
+      const querySnapshot = await window.fs.getDocs(window.fs.collection(window.db, "patients"));
+      for (const document of querySnapshot.docs) {
+        await window.fs.deleteDoc(window.fs.doc(window.db, "patients", document.id));
+      }
+      toast("Factory Reset Complete: Local & Cloud wiped");
+    } catch (err) {
+      console.error("Cloud wipe error:", err);
+      toast("Local wiped, but cloud wipe encountered an error");
+    }
+  } else {
+    toast("Local database wiped successfully");
+  }
+
+  render();
 }
 
 /* ============ EDIT / VISIT / IMMUNIZATION MODALS ============ */
@@ -870,7 +967,7 @@ let DOC_UNLOCKED=false, DOC_TAB="waiting", DOC_FILTER="", DOC_TODAY=true;
 function doctorView(){
   if(!DOC_UNLOCKED) return `<div class="card" style="max-width:420px;margin:30px auto;text-align:center">
     <div style="font-size:30px">🔒</div><h3>Doctor Module</h3><p class="sub">Enter password to access clinical records.</p>
-    <input id="doc_pw" type="password" placeholder="Password" style="text-align:center" onkeydown="if(event.key==='Enter')unlockDoc()"/>
+    <input id="doc_pw" type="password" placeholder="Password (123456)" style="text-align:center" onkeydown="if(event.key==='Enter')unlockDoc()"/>
     <div class="mt"><button class="btn btn-p" style="width:100%" onclick="unlockDoc()">Unlock</button></div></div>`;
   const items=queueItems(DOC_TAB);
   return `<div class="card mb"><div class="flexb"><input id="doc_filter" value="${esc(DOC_FILTER)}" placeholder="Filter by ID, phone or name" style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter'){DOC_FILTER=this.value;render()}"/>
@@ -882,7 +979,10 @@ function doctorView(){
     </div>
     ${items.length?items.map((it,i)=>qcard(it,i+1,DOC_TAB==="treated")).join(""):`<div class="empty">${DOC_TAB==="waiting"?"No patients waiting. Newly registered patients appear here.":"No treated patients."}</div>`}`;
 }
-function unlockDoc(){ if(val("doc_pw")==="123456"){DOC_UNLOCKED=true;render();}else toast("Incorrect password"); }
+
+// DOCTOR MODULE PASSWORD: 123456
+function unlockDoc(){ if(val("doc_pw")==="123456"){DOC_UNLOCKED=true;render();}else toast("Incorrect password (use 123456)"); }
+
 function queueItems(status){
   const f=DOC_FILTER.trim().toLowerCase(), today=todayISO(); const out=[];
   loadPatients().forEach(p=>{ if(f&&!(p.patient_id.toLowerCase().includes(f)||(p.name||"").toLowerCase().includes(f)||(p.phone||"").toLowerCase().includes(f)))return;
