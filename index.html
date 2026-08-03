@@ -386,7 +386,7 @@ tr:nth-child(even) td { background: #F8FAFC; }
         <button class="tab active" data-tab="staff" onclick="setTab('staff')">📋 Staff Module</button>
         <button class="tab" data-tab="doctor" onclick="setTab('doctor')">🩺 Doctor Module</button>
         <button class="tab" data-tab="reports" onclick="setTab('reports')">📊 Reports</button>
-        <button class="tab" data-tab="settings" onclick="setTab('settings')">⚙️ Settings</button>
+        <button class="tab" data-tab="settings" title="Settings" onclick="setTab('settings')">⚙️</button>
       </div>
       <div id="view">
       </div>
@@ -619,7 +619,7 @@ function growthHTML(p){
     out+=svgChart("Weight-for-age","kg","Age (months)","#10B981",xs,band("weight"),w);
     out+=svgChart("Height/Length-for-age","cm","Age (months)","#4F46E5",xs,band("height"),h);
     if(hc.length)out+=svgChart("Head circumference-for-age","cm","Age (months)","#F59E0B",xs,band("headcirc"),hc);
-    if(wfh.length){ const wb={P3:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P3,x)),P50:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P97,x)),P97:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P97,x))}; out+=svgChart("Weight-for-height","kg","Height (cm)","#8B5CF6",WFH_HEIGHTS,wb,wfh); }
+    if(wfh.length){ const wb={P3:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P3,x)),P50:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P50,x)),P97:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P97,x))}; out+=svgChart("Weight-for-height","kg","Height (cm)","#8B5CF6",WFH_HEIGHTS,wb,wfh); }
     return out;
   }
   const data=visits.map(v=>({d:(v.date_of_visit||"").slice(5),h:num(v.ht),w:num(v.wt)})).filter(x=>x.h!=null||x.w!=null);
@@ -862,11 +862,9 @@ async function factoryResetDatabase() {
 
   if (!confirm("CRITICAL WARNING: Are you ABSOLUTELY sure? ALL local and cloud data will be destroyed forever!")) return;
 
-  // 1. Clear Local Storage
   safeRemoveItem(LS_P);
   safeRemoveItem(LS_C);
 
-  // 2. Clear Cloud Firestore
   if (window.db && window.fs) {
     try {
       const querySnapshot = await window.fs.getDocs(window.fs.collection(window.db, "patients"));
