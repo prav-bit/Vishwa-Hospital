@@ -867,15 +867,46 @@ function renderImmun(pid){
 function genImmun(pid){ const dob=val("im_dob"); if(!dob){toast("Select DOB");return;} updateP(pid,x=>{x.dob=dob;x.vaccinations=buildSchedule(dob,x.vaccinations);}); renderImmun(pid); }
 
 /* ============ REPORTS MODULE ============ */
+let RS=addDays(-29), RE=todayISO();
+function addDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toLocaleDateString("en-CA"); }
+
+function reportData(){
+  const rows=[]; loadPatients().forEach(p=>{ (p.visits||[]).forEach(v=>{ const d=(v.date_of_visit||"").slice(0,10); if(d&&d>=RS&&d<=RE)rows.push({patient_id:p.patient_id,name:p.name,age:displayAge(p),sex:p.sex,date:d,type:v.visit_type,cat:v.patient_category}); }); });
+  rows.sort((a,b)=>a.date.localeCompare(b.date));
+  const s={total:rows.length,new:0,old:0,fresh:0,followup:0,subsequent:0};
+  rows.forEach(r=>{ if(r.cat==="new")s.new++;else s.old++; if(s[r.type]!=null)s[r.type]++; });
+  return {rows,s};
+}
+
 function reportsView(){
-  const rows = loadPatients();
-  return `<div class="card">
-    <h3>📊 Patient Reports</h3>
-    <p class="sub">Total Patients Registered: <b>${rows.length}</b></p>
-    <table><tr><th>ID</th><th>Name</th><th>Age</th><th>Sex</th></tr>
-    ${rows.length?rows.map(r=>`<tr><td class="mono">${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(displayAge(r))}</td><td>${esc(r.sex)}</td></tr>`).join(""):'<tr><td colspan="4" style="text-align:center;padding:20px">No records found.</td></tr>'}
-    </table>
-  </div>`;
+  const {rows,s}=reportData();
+  return `<div class="card mb"><div class="flexb">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div class="field"><label class="lbl">From</label><input type="date" id="rp_s" value="${RS}" onchange="RS=this.value;render()"/></div>
+      <div class="field"><label class="lbl">To</label><input type="date" id="rp_e" value="${RE}" onchange="RE=this.value;render()"/></div>
+      <button class="btn btn-o btn-sm" onclick="RS=todayISO();RE=todayISO();render()">Today</button>
+      <button class="btn btn-o btn-sm" onclick="RS=addDays(-6);RE=todayISO();render()">This Week</button>
+      <button class="btn btn-o btn-sm" onclick="RS=addDays(-29);RE=todayISO();render()">This Month</button>
+    </div>
+    <button class="btn btn-a btn-sm" onclick="printReport()">🖨️ Print / Save PDF</button>
+  </div></div>
+  <div class="metrics">
+    ${metric("Total Attended",s.total)}${metric("New Patients",s.new)}${metric("Old Patients",s.old)}${metric("Fresh",s.fresh)}${metric("Follow-up",s.followup)}${metric("Subsequent",s.subsequent)}
+  </div>
+  <div class="card"><div class="flexb mb"><h3>Patient List</h3><span class="tiny">${rows.length} record(s)</span></div>
+  <div style="max-height:420px;overflow:auto"><table><tr><th>ID</th><th>Name</th><th>Age</th><th>Sex</th><th>Date</th><th>Type</th><th>Category</th></tr>
+  ${rows.length?rows.map(r=>`<tr><td class="mono">${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(r.age)}</td><td>${esc(r.sex)}</td><td class="mono tiny">${r.date}</td><td style="text-transform:capitalize">${r.type}</td><td>${r.cat==="new"?"New":"Old"}</td></tr>`).join(""):'<tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:24px">No records for this range.</td></tr>'}</table></div></div>`;
+}
+
+function metric(l,v){ return `<div class="metric"><div class="m-l">${l}</div><div class="m-v">${v}</div></div>`; }
+
+function printReport(){
+  const {rows,s}=reportData();
+  const css=`body{font-family:Segoe UI,Arial,sans-serif;color:#1E293B;padding:20px}.b{color:#4F46E5;font-size:24px;font-weight:800;margin:0}.s{color:#64748B;font-size:12px}.cards{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.c{border:1px solid #E2E8F0;border-radius:8px;padding:10px;min-width:120px}.c .l{font-size:10px;text-transform:uppercase;color:#64748B;font-weight:700}.c .v{font-size:22px;font-weight:800}table{width:100%;border-collapse:collapse;font-size:11px}th{background:#4F46E5;color:#fff;text-align:left;padding:6px}td{padding:6px;border-bottom:1px solid #E2E8F0}`;
+  const cards=[["Total Attended",s.total],["New",s.new],["Old",s.old],["Fresh",s.fresh],["Follow-up",s.followup],["Subsequent",s.subsequent]].map(c=>`<div class="c"><div class="l">${c[0]}</div><div class="v">${c[1]}</div></div>`).join("");
+  const tr=rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(r.age)}</td><td>${esc(r.sex)}</td><td>${r.date}</td><td>${r.type}</td><td>${r.cat}</td></tr>`).join("");
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Vishwa Hospital Report</title><style>${css}</style></head><body><p class="b">Vishwa Hospital</p><p class="s">Patient Report — ${RS} to ${RE}</p><div class="cards">${cards}</div><h3>Patient List</h3><table><tr><th>#</th><th>ID</th><th>Name</th><th>Age</th><th>Sex</th><th>Date</th><th>Type</th><th>Category</th></tr>${tr||'<tr><td colspan=8>No records</td></tr>'}</table><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>`;
+  const w=window.open("","_blank"); w.document.write(html); w.document.close();
 }
 
 /* ============ MODALS & UTILS ============ */
