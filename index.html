@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vishwa Hospital — Cloud Synced & Resilient</title>
+    <title>Vishwa Hospital — Patient Management System</title>
     <style>
 :root {
   --primary: #4F46E5;
@@ -12,7 +12,6 @@
   --secondary: #06B6D4;
   --accent: #F59E0B;
   --danger: #EF4444;
-  --danger-hover: #DC2626;
   --success: #10B981;
   --ink: #0F172A;
   --muted: #64748B;
@@ -44,75 +43,79 @@ header {
 .hwrap {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 14px 20px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   justify-content: space-between;
 }
 
-.brand { display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 8px; }
 
 .logo {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+  font-size: 18px;
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.3);
 }
 
-h1 { font-size: 22px; font-weight: 800; margin: 0; color: #1E1B4B; }
-.tag { font-size: 12px; color: #6366F1; font-weight: 600; }
+h1 { font-size: 16px; font-weight: 800; margin: 0; color: #1E1B4B; }
+.tag { font-size: 10px; color: #6366F1; font-weight: 600; }
 
-main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+main { max-width: 1100px; margin: 0 auto; padding: 14px; }
 
+/* SINGLE ROW STRICT TAB BAR */
 .tabs {
-  display: inline-flex;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.95);
   border: 1px solid #C7D2FE;
   border-radius: 999px;
-  padding: 6px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  padding: 4px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  width: 100%;
 }
 
 .tab {
   border: none;
   background: transparent;
-  padding: 10px 20px;
+  padding: 8px 10px;
   border-radius: 999px;
   font-weight: 700;
   color: var(--muted);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
+  white-space: nowrap;
+  flex: 1;
+  text-align: center;
   transition: all 0.2s ease;
 }
 
 .tab.active {
   background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
 }
 
-.subtabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.subtabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
 
 .subtab {
   border: 1px solid #CBD5E1;
   background: #fff;
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 999px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--muted);
-  transition: all 0.2s ease;
 }
 
 .subtab.active {
@@ -124,24 +127,24 @@ main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
 .card {
   background: var(--card-bg);
   border: 1px solid #E0E7FF;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
 }
 
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-.row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
 @media(max-width: 760px) { .row, .row3, .row4 { grid-template-columns: 1fr; } }
 
 label.lbl {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #475569;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .opt { font-weight: 500; text-transform: none; letter-spacing: normal; color: #94A3B8; }
@@ -150,123 +153,78 @@ input, select, textarea {
   width: 100%;
   border: 1.5px solid #CBD5E1;
   border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 14px;
+  padding: 8px 12px;
+  font-size: 13px;
   font-family: inherit;
   background: #F8FAFC;
   color: var(--ink);
-  transition: all 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
   background: #fff;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
 }
 
-textarea { resize: vertical; border-radius: 12px; }
-
-.field { margin-bottom: 0; }
+textarea { resize: vertical; border-radius: 10px; }
 
 .btn {
   border: none;
   border-radius: 999px;
-  padding: 10px 22px;
+  padding: 8px 16px;
   font-weight: 700;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.2s ease;
+  gap: 6px;
 }
 
-.btn-p {
-  background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-}
-.btn-p:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.btn-p { background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%); color: #fff; }
+.btn-a { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #fff; }
+.btn-o { background: #fff; border: 1.5px solid #CBD5E1; color: var(--ink); }
+.btn-g { background: transparent; color: var(--muted); padding: 6px 8px; }
+.btn-danger { background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%); color: #fff; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
 
-.btn-a {
-  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
-}
-.btn-a:hover { filter: brightness(0.96); }
+.mt { margin-top: 16px; }
+.mb { margin-bottom: 12px; }
+.right { display: flex; justify-content: flex-end; gap: 8px; }
 
-.btn-o {
-  background: #fff;
-  border: 1.5px solid #CBD5E1;
-  color: var(--ink);
-}
-.btn-o:hover { background: #F1F5F9; border-color: #94A3B8; }
+h3 { font-size: 16px; font-weight: 800; margin: 0 0 4px; color: #1E1B4B; }
+.sub { color: var(--muted); font-size: 12px; margin: 0 0 14px; }
+.divider { border-top: 1px solid #E2E8F0; margin: 16px 0; }
 
-.btn-g { background: transparent; color: var(--muted); padding: 8px 12px; }
-.btn-g:hover { color: var(--primary); background: var(--primary-light); }
-
-.btn-danger {
-  background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
-}
-.btn-danger:hover { filter: brightness(0.95); }
-
-.btn-sm { padding: 7px 14px; font-size: 13px; }
-
-.mt { margin-top: 22px; }
-.mb { margin-bottom: 16px; }
-.right { display: flex; justify-content: flex-end; gap: 10px; }
-
-h3 { font-size: 18px; font-weight: 800; margin: 0 0 4px; color: #1E1B4B; }
-.sub { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
-.divider { border-top: 1px solid #E2E8F0; margin: 22px 0; }
-
-.pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
 .p-fresh { background: #D1FAE5; color: #047857; }
 .p-followup { background: #FEF3C7; color: #B45309; }
 .p-subsequent { background: #E0F2FE; color: #0369A1; }
 
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-.badge { background: #EEF2FF; color: #4338CA; border-radius: 999px; padding: 3px 12px; font-size: 12px; font-weight: 700; }
+.badge { background: #EEF2FF; color: #4338CA; border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
 
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { text-align: left; background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%); color: #fff; padding: 10px; position: sticky; top: 0; }
-td { padding: 10px; border-bottom: 1px solid #E2E8F0; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { text-align: left; background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%); color: #fff; padding: 8px; position: sticky; top: 0; }
+td { padding: 8px; border-bottom: 1px solid #E2E8F0; }
 tr:nth-child(even) td { background: #F8FAFC; }
-
-.metrics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin: 20px 0; }
-@media(max-width: 900px) { .metrics { grid-template-columns: repeat(3, 1fr); } }
-@media(max-width: 520px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
-
-.metric {
-  border: 1px solid #E0E7FF;
-  border-radius: 14px;
-  padding: 16px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.03);
-}
-.metric .m-l { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.metric .m-v { font-size: 32px; font-weight: 800; margin-top: 6px; color: var(--primary); }
 
 .qcard {
   border: 1px solid #E2E8F0;
   border-radius: 12px;
   background: #fff;
-  padding: 14px;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .token {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
   color: #fff;
   display: flex;
@@ -275,21 +233,8 @@ tr:nth-child(even) td { background: #F8FAFC; }
   justify-content: center;
   flex-shrink: 0;
 }
-.token .t1 { font-size: 9px; opacity: 0.8; text-transform: uppercase; }
-.token .t2 { font-size: 17px; font-weight: 800; }
-
-.tick {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: #D1FAE5;
-  color: #059669;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-}
+.token .t1 { font-size: 8px; opacity: 0.8; text-transform: uppercase; }
+.token .t2 { font-size: 14px; font-weight: 800; }
 
 .overlay {
   position: fixed;
@@ -300,65 +245,63 @@ tr:nth-child(even) td { background: #F8FAFC; }
   align-items: flex-start;
   justify-content: center;
   z-index: 50;
-  padding: 24px 12px;
+  padding: 16px 10px;
   overflow: auto;
 }
 .overlay.show { display: flex; }
 
-.modal { background: #fff; border-radius: 20px; max-width: 840px; width: 100%; padding: 26px; max-height: 92vh; overflow: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-.modal.wide { max-width: 1000px; }
-.modal h2 { font-size: 19px; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: #1E1B4B; }
+.modal { background: #fff; border-radius: 16px; max-width: 800px; width: 100%; padding: 20px; max-height: 90vh; overflow: auto; }
+.modal.wide { max-width: 950px; }
 
-.empty { border: 2px dashed #CBD5E1; border-radius: 14px; background: #fff; padding: 48px; text-align: center; color: #94A3B8; }
+.empty { border: 2px dashed #CBD5E1; border-radius: 12px; background: #fff; padding: 36px; text-align: center; color: #94A3B8; }
 
-.nutshell { border: 1px solid #FDE68A; background: #FFFBEB; border-radius: 12px; padding: 14px; margin-bottom: 16px; }
-.nutshell .nt-h { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #B45309; margin-bottom: 8px; }
-.nrec { border: 1px solid #FDE68A; background: #fff; border-radius: 8px; padding: 9px 11px; font-size: 13px; margin-bottom: 8px; }
-
-.info { display: flex; flex-wrap: wrap; gap: 10px 30px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 16px; margin: 8px 0 16px; }
-.info div span { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--primary); }
-
-.exrow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media(max-width: 640px) { .exrow { grid-template-columns: 1fr; } }
-.exbox { border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px; background: #F8FAFC; }
+.nutshell { border: 1px solid #FDE68A; background: #FFFBEB; border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+.nutshell .nt-h { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #B45309; margin-bottom: 6px; }
+.nrec { border: 1px solid #FDE68A; background: #fff; border-radius: 6px; padding: 8px; font-size: 12px; margin-bottom: 6px; }
 
 .toast {
   position: fixed;
-  bottom: 22px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   background: #0F172A;
   color: #fff;
-  padding: 12px 24px;
+  padding: 8px 16px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   z-index: 99;
   opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity 0.2s;
   pointer-events: none;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
-
-.chart { border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px; margin-bottom: 14px; background: #fff; }
-.chart .ct { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
-.legend { font-size: 11px; color: var(--muted); margin-top: 4px; }
-
-.vtable td, .vtable th { padding: 6px 8px; font-size: 12px; }
-.overdue { color: var(--danger); font-weight: 700; }
-.tiny { font-size: 12px; color: var(--muted); }
-.flexb { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.toast.show { opacity: 1; }
 
 .status-dot {
   display: inline-block;
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   margin-right: 4px;
 }
-.status-dot.active { background-color: #10B981; box-shadow: 0 0 8px #10B981; }
-.status-dot.inactive { background-color: #EF4444; box-shadow: 0 0 8px #EF4444; }
+.status-dot.active { background-color: #10B981; box-shadow: 0 0 6px #10B981; }
+.status-dot.inactive { background-color: #EF4444; box-shadow: 0 0 6px #EF4444; }
+.exrow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:640px){ .exrow { grid-template-columns: 1fr; } }
+.exbox { border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; background: #F8FAFC; }
+.metrics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin: 16px 0; }
+@media(max-width: 900px) { .metrics { grid-template-columns: repeat(3, 1fr); } }
+@media(max-width: 520px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+.metric { border: 1px solid #E0E7FF; border-radius: 12px; padding: 12px; background: #fff; }
+.metric .m-l { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--muted); }
+.metric .m-v { font-size: 26px; font-weight: 800; margin-top: 4px; color: var(--primary); }
+.vtable td, .vtable th { padding: 5px 6px; font-size: 11px; }
+.overdue { color: var(--danger); font-weight: 700; }
+.tiny { font-size: 11px; color: var(--muted); }
+.flexb { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.chart { border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px; margin-bottom: 12px; background: #fff; }
+.chart .ct { font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
+.legend { font-size: 10px; color: var(--muted); margin-top: 4px; }
 </style>
   </head>
   <body>
@@ -368,12 +311,12 @@ tr:nth-child(even) td { background: #F8FAFC; }
           <div class="logo">🏥</div>
           <div>
             <h1>Vishwa Hospital</h1>
-            <div class="tag">Patient Management — Cloud Synced</div>
+            <div class="tag">Patient Management</div>
           </div>
         </div>
-        <div style="display:flex;gap:8px;">
+        <div style="display:flex;gap:6px;">
           <button class="btn btn-o btn-sm" onclick="syncFromFirestore(true)">
-            <span id="cloudStatusDot" class="status-dot inactive"></span> 🔄 Sync Cloud
+            <span id="cloudStatusDot" class="status-dot inactive"></span> Sync
           </button>
           <button class="btn btn-o btn-sm" onclick="backupData()">⬇ Backup</button>
           <button class="btn btn-o btn-sm" onclick="document.getElementById('restoreFile').click()">⬆ Restore</button>
@@ -383,10 +326,10 @@ tr:nth-child(even) td { background: #F8FAFC; }
     </header>
     <main>
       <div class="tabs">
-        <button class="tab active" data-tab="staff" onclick="setTab('staff')">📋 Staff Module</button>
-        <button class="tab" data-tab="doctor" onclick="setTab('doctor')">🩺 Doctor Module</button>
+        <button class="tab active" data-tab="staff" onclick="setTab('staff')">📋 Staff</button>
+        <button class="tab" data-tab="doctor" onclick="setTab('doctor')">🩺 Doctor</button>
         <button class="tab" data-tab="reports" onclick="setTab('reports')">📊 Reports</button>
-        <button class="tab" data-tab="settings" title="Settings" onclick="setTab('settings')">⚙️</button>
+        <button class="tab" data-tab="settings" style="flex:0 0 42px;" title="Settings" onclick="setTab('settings')">⚙️</button>
       </div>
       <div id="view">
       </div>
@@ -439,40 +382,20 @@ const memoryStorage = {};
 function setCloudStatus(isActive) {
   const dot = document.getElementById("cloudStatusDot");
   if (dot) {
-    if (isActive) {
-      dot.className = "status-dot active";
-      dot.title = "Cloud Storage Active";
-    } else {
-      dot.className = "status-dot inactive";
-      dot.title = "Cloud Storage Offline";
-    }
+    dot.className = isActive ? "status-dot active" : "status-dot inactive";
   }
 }
 
 function safeGetItem(key) {
-  try {
-    return localStorage.getItem(key);
-  } catch (e) {
-    console.warn("localStorage blocked, falling back to memory storage.");
-    return memoryStorage[key] || null;
-  }
+  try { return localStorage.getItem(key); } catch (e) { return memoryStorage[key] || null; }
 }
 
 function safeSetItem(key, value) {
-  try {
-    localStorage.setItem(key, value);
-  } catch (e) {
-    console.warn("localStorage blocked, saving to memory storage.");
-    memoryStorage[key] = value;
-  }
+  try { localStorage.setItem(key, value); } catch (e) { memoryStorage[key] = value; }
 }
 
 function safeRemoveItem(key) {
-  try {
-    localStorage.removeItem(key);
-  } catch (e) {
-    delete memoryStorage[key];
-  }
+  try { localStorage.removeItem(key); } catch (e) { delete memoryStorage[key]; }
 }
 
 function loadPatients(){ 
@@ -526,7 +449,7 @@ async function syncFromFirestore(notify = false) {
   } catch (err) {
     console.error("Error pulling from Firestore:", err);
     setCloudStatus(false);
-    if (notify) toast("Cloud sync failed (check internet or rules)");
+    if (notify) toast("Cloud sync failed");
   }
 }
 
@@ -555,18 +478,14 @@ const SCHEDULE=[
 ["6th Week","DTwP/DTaP-1","week",6],["6th Week","IPV-1","week",6],["6th Week","Hib-1","week",6],["6th Week","Hep B-2","week",6],["6th Week","Rotavirus-1","week",6],["6th Week","PCV-1","week",6],
 ["10th Week","DTwP/DTaP-2","week",10],["10th Week","IPV-2","week",10],["10th Week","Hib-2","week",10],["10th Week","Hep B-3","week",10],["10th Week","Rotavirus-2","week",10],["10th Week","PCV-2","week",10],
 ["14th Week","DTwP/DTaP-3","week",14],["14th Week","IPV-3","week",14],["14th Week","Hib-3","week",14],["14th Week","Hep B-4","week",14],["14th Week","Rotavirus-3","week",14],["14th Week","PCV-3","week",14],
-["6th Month","Influenza (IIV)-1","month",6],
-["7th Month","Influenza (IIV)-2","month",7],
-["6-9 Month","Typhoid Conjugate Vaccine","month",9],
-["9th Month","MMR-1","month",9],
-["12th Month","Hepatitis A","month",12],["12th Month","JE-1","month",12],
-["13th Month","JE-2","month",13],
+["6th Month","Influenza (IIV)-1","month",6],["7th Month","Influenza (IIV)-2","month",7],
+["6-9 Month","Typhoid Conjugate Vaccine","month",9],["9th Month","MMR-1","month",9],
+["12th Month","Hepatitis A","month",12],["12th Month","JE-1","month",12],["13th Month","JE-2","month",13],
 ["15th Month","MMR-2","month",15],["15th Month","Varicella-1","month",15],["15th Month","PCV Booster","month",15],
 ["16-18th Month","DTwP/DTaP-B1","month",16],["16-18th Month","Hib-B1","month",16],["16-18th Month","IPV-B1","month",16],
 ["18-19th Month","Hep A-2","month",18],["18-19th Month","Varicella-2","month",18],
 ["4-6 Years","DTwP/DTaP-B2","year",4],["4-6 Years","IPV-B2","year",4],["4-6 Years","MMR-3","year",4],
-["10-12 Years","Tdap","year",10],["10-12 Years","HPV","year",10],
-["Annual Flu Vaccine","Annual Flu - 2 Yrs","year",2],["Annual Flu Vaccine","Annual Flu - 3 Yrs","year",3],["Annual Flu Vaccine","Annual Flu - 4 Yrs","year",4],["Annual Flu Vaccine","Annual Flu - 5 Yrs","year",5],
+["10-12 Years","Tdap","year",10],["10-12 Years","HPV","year",10]
 ];
 function addOffset(d,unit,value){ const nd=new Date(d.getTime()); if(unit==="day"){nd.setDate(nd.getDate()+value);return nd;} if(unit==="week"){nd.setDate(nd.getDate()+value*7);return nd;} let months=unit==="year"?value*12:value; const day=nd.getDate(); nd.setDate(1); nd.setMonth(nd.getMonth()+months); const last=new Date(nd.getFullYear(),nd.getMonth()+1,0).getDate(); nd.setDate(Math.min(day,last)); return nd; }
 function generateSchedule(dob,existing){ const b=parseD(dob); if(!b)return []; const prev={}; (existing||[]).forEach(r=>prev[r.vaccine]=r); return SCHEDULE.map(([label,vac,unit,val])=>{ const old=prev[vac]||{}; return {age_label:label,vaccine:vac,due_date:fmtDate(addOffset(b,unit,val)),given_date:old.given_date||"",batch_no:old.batch_no||"",remarks:old.remarks||""}; }); }
@@ -605,6 +524,7 @@ function svgChart(title,unit,xLabel,color,xs,bands,child){
     </svg>
     <div class="legend">— WHO P50 &nbsp; ┄ P3/P97 &nbsp; <b style="color:${color}">● This child</b></div></div>`;
 }
+
 function growthHTML(p){
   const visits=p.visits||[], dob=p.dob, sk=sexKey(p.sex);
   if(dob&&sk){
@@ -652,17 +572,15 @@ function render(){
   else if (TAB === "doctor") v.innerHTML = doctorView(); 
   else if (TAB === "reports") v.innerHTML = reportsView(); 
   else v.innerHTML = settingsView(); 
-  afterRender(); 
 }
 
 /* ============ AGE FORM FIELD ============ */
 function ageFieldHTML(prefix,dob,age){
   if(dob){ return `<input id="${prefix}_auto" readonly value="${esc(displayAge({dob,age}))}" style="background:#F1F5F9" placeholder="Auto from DOB"/>`; }
   const a=parseAge(age);
-  return `<div style="display:flex;gap:8px"><input id="${prefix}_y" type="number" min="0" value="${a.years}" placeholder="Years" oninput="syncAge('${prefix}')"/><input id="${prefix}_m" type="number" min="0" max="11" value="${a.months}" placeholder="Months (opt)" oninput="syncAge('${prefix}')"/></div>`;
+  return `<div style="display:flex;gap:8px"><input id="${prefix}_y" type="number" min="0" value="${a.years}" placeholder="Years"/><input id="${prefix}_m" type="number" min="0" max="11" value="${a.months}" placeholder="Months"/></div>`;
 }
 function readAge(prefix,dob){ if(dob){const a=ageFromDob(dob); return {age:formatAge(a.years,a.months),recorded:""};} const y=document.getElementById(prefix+"_y"),m=document.getElementById(prefix+"_m"); return {age:formatAge(y?y.value:"",m?m.value:""),recorded:todayISO()}; }
-function syncAge(){}
 
 /* ============ STAFF MODULE ============ */
 function staffView(){
@@ -673,6 +591,7 @@ function staffView(){
   else body=alertsView();
   return `<div class="subtabs">${subs.map(s=>`<button class="subtab ${STAFF_SUB===s[0]?'active':''}" onclick="STAFF_SUB='${s[0]}';render()">${s[1]}</button>`).join("")}</div>${body}`;
 }
+
 function registerForm(){
   return `<div class="card">
     <h3>Patient Details</h3><p class="sub">A new Patient ID will be generated automatically.</p>
@@ -681,18 +600,18 @@ function registerForm(){
       <div class="row"><div class="field"><label class="lbl">Age</label><div id="r_agebox">${ageFieldHTML("r_age","","")}</div></div>
       <div class="field"><label class="lbl">Sex</label><select id="r_sex"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div></div>
       <div class="field"><label class="lbl">Phone <span class="opt">(optional)</span></label><input id="r_phone" placeholder="Mobile number"/></div>
-      <div class="field"><label class="lbl">Date of Birth <span class="opt">(for vaccination calendar)</span></label><input id="r_dob" type="date" max="${todayISO()}" onchange="document.getElementById('r_agebox').innerHTML=ageFieldHTML('r_age',this.value,'')"/></div>
+      <div class="field"><label class="lbl">Date of Birth <span class="opt">(for vaccination)</span></label><input id="r_dob" type="date" max="${todayISO()}" onchange="document.getElementById('r_agebox').innerHTML=ageFieldHTML('r_age',this.value,'')"/></div>
     </div>
     <div class="divider"></div>
-    <h3>Visit Information</h3><p class="sub">New registrations are recorded as a <b style="color:#059669">Fresh</b> visit and sent to the doctor's queue.</p>
+    <h3>Visit Information</h3>
     <div class="row">
       <div class="field"><label class="lbl">Date of Visit</label><input id="r_dov" type="date" value="${todayISO()}"/></div>
     </div>
     <div class="row4 mt">
-      <div class="field"><label class="lbl">Height <span class="opt">(opt)</span></label><input id="r_ht" placeholder="e.g. 92 cm"/></div>
-      <div class="field"><label class="lbl">Weight <span class="opt">(opt)</span></label><input id="r_wt" placeholder="e.g. 13 kg"/></div>
-      <div class="field"><label class="lbl">Head Circ. <span class="opt">(&lt;5y)</span></label><input id="r_hc" placeholder="e.g. 42 cm"/></div>
-      <div class="field"><label class="lbl">BP <span class="opt">(opt)</span></label><input id="r_bp" placeholder="e.g. 90/60"/></div>
+      <div class="field"><label class="lbl">Height</label><input id="r_ht" placeholder="cm"/></div>
+      <div class="field"><label class="lbl">Weight</label><input id="r_wt" placeholder="kg"/></div>
+      <div class="field"><label class="lbl">Head Circ.</label><input id="r_hc" placeholder="cm"/></div>
+      <div class="field"><label class="lbl">BP</label><input id="r_bp" placeholder="90/60"/></div>
     </div>
     <div class="right mt"><button class="btn btn-p" onclick="doRegister()">💾 Register Patient</button></div>
   </div>`;
@@ -705,64 +624,50 @@ function doRegister(){
   
   const v=emptyVisit(); 
   v.date_of_visit=val("r_dov")||todayISO(); 
-  v.ht=val("r_ht");
-  v.wt=val("r_wt");
-  v.hc=val("r_hc");
-  v.bp=val("r_bp");
+  v.ht=val("r_ht"); v.wt=val("r_wt"); v.hc=val("r_hc"); v.bp=val("r_bp");
   
   const pid=nextId();
   const patient={
-    patient_id:pid,
-    name,
-    age:ag.age,
-    sex,
-    phone:val("r_phone"),
-    dob,
-    age_recorded_at:dob?"":todayISO(),
-    visits:[v],
-    vaccinations:dob?buildSchedule(dob):[],
-    next_vaccination:null,
-    created_at:new Date().toISOString()
+    patient_id:pid, name, age:ag.age, sex, phone:val("r_phone"), dob,
+    age_recorded_at:dob?"":todayISO(), visits:[v], vaccinations:dob?buildSchedule(dob):[],
+    next_vaccination:null, created_at:new Date().toISOString()
   };
   
-  const arr=loadPatients(); 
-  arr.push(patient); 
-  savePatients(arr);
-  
+  const arr=loadPatients(); arr.push(patient); savePatients(arr);
   toast(`${name} - ${pid} registered`);
-  
-  STAFF_SUB="register"; 
-  render();
+  STAFF_SUB="register"; render();
 }
 
 function existingView(){
   return `<div class="card">
-    <div style="display:flex;gap:12px"><input id="s_q" placeholder="Search by Patient ID (e.g. 0001/26), name or phone" onkeydown="if(event.key==='Enter')doSearch()"/><button class="btn btn-p" onclick="doSearch()">🔍 Search</button></div>
+    <div style="display:flex;gap:8px"><input id="s_q" placeholder="Search by Patient ID, Name, Phone" onkeydown="if(event.key==='Enter')doSearch()"/><button class="btn btn-p" onclick="doSearch()">Search</button></div>
     <div id="s_results" class="mt"></div>
     <div id="s_selected" class="mt"></div>
   </div>`;
 }
+
 function doSearch(){
   const q=val("s_q").trim().toLowerCase();
   const res=loadPatients().filter(p=>!q||p.patient_id.toLowerCase().includes(q)||(p.name||"").toLowerCase().includes(q)||(p.phone||"").toLowerCase().includes(q)).slice(0,50);
   const el=document.getElementById("s_results");
   if(!res.length){ el.innerHTML=`<p class="tiny">No patients found.</p>`; return; }
-  el.innerHTML=res.map(p=>`<button class="btn btn-o" style="width:100%;justify-content:space-between;margin-bottom:8px;text-align:left" onclick="selectPatient('${p.patient_id}')"><span><b>${esc(p.name)}</b> <span class="tiny">${esc(displayAge(p))} • ${esc(p.sex)} ${p.phone?"• "+esc(p.phone):""}</span></span><span class="badge mono">${p.patient_id}</span></button>`).join("");
+  el.innerHTML=res.map(p=>`<button class="btn btn-o" style="width:100%;justify-content:space-between;margin-bottom:6px;text-align:left" onclick="selectPatient('${p.patient_id}')"><span><b>${esc(p.name)}</b> <span class="tiny">${esc(displayAge(p))} • ${esc(p.sex)}</span></span><span class="badge mono">${p.patient_id}</span></button>`).join("");
 }
+
 function selectPatient(pid){ selPid=pid; document.getElementById("s_selected").innerHTML=selectedCard(getP(pid)); }
 
 function selectedCard(p){
   if(!p)return "";
   return `<div class="card" style="background:#EEF2FF;border-color:#C7D2FE">
-    <div class="flexb"><div><span style="font-size:17px;font-weight:800;color:#1E1B4B">${esc(p.name)}</span> <span class="badge mono">${p.patient_id}</span><div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)} ${p.phone?"• "+esc(p.phone):""}</div></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <div class="flexb"><div><span style="font-size:16px;font-weight:800;color:#1E1B4B">${esc(p.name)}</span> <span class="badge mono">${p.patient_id}</span><div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)} ${p.phone?"• "+esc(p.phone):""}</div></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
       <button class="btn btn-o btn-sm" onclick="openEdit('${p.patient_id}')">✏️ Edit</button>
       <button class="btn btn-o btn-sm" onclick="openImmun('${p.patient_id}')">💉 Immunization</button>
       <button class="btn btn-p btn-sm" onclick="openNewVisit('${p.patient_id}')">➕ New Visit</button>
       <button class="btn btn-danger btn-sm" onclick="deletePatient('${p.patient_id}')">🗑️ Delete</button>
     </div></div>
     <div class="mt"><div class="lbl">Visit History</div>
-    ${(p.visits||[]).slice().reverse().map(v=>`<div class="qcard" style="padding:9px 12px"><span class="tiny mono">${v.date_of_visit}</span> <span class="pill p-${v.visit_type}">${v.visit_type}</span> <span class="tiny">${v.patient_category==="new"?"New":"Old"} • ${v.status}</span></div>`).join("")||'<p class="tiny">No visits.</p>'}</div>
+    ${(p.visits||[]).slice().reverse().map(v=>`<div class="qcard" style="padding:8px 10px"><span class="tiny mono">${v.date_of_visit}</span> <span class="pill p-${v.visit_type}">${v.visit_type}</span> <span class="tiny">${v.patient_category==="new"?"New":"Old"} • ${v.status}</span></div>`).join("")||'<p class="tiny">No visits.</p>'}</div>
   </div>`;
 }
 
@@ -770,11 +675,11 @@ function selectedCard(p){
 async function deletePatient(pid){
   const pw = prompt("Enter Password (654321) to delete this record:");
   if (pw !== "654321") {
-    if (pw !== null) toast("Incorrect password - deletion cancelled");
+    if (pw !== null) toast("Incorrect password");
     return;
   }
 
-  if (!confirm(`Are you sure you want to permanently delete patient ID ${pid}?`)) return;
+  if (!confirm(`Permanently delete patient ID ${pid}?`)) return;
 
   let arr = loadPatients().filter(p => p.patient_id !== pid);
   safeSetItem(LS_P, JSON.stringify(arr));
@@ -785,8 +690,7 @@ async function deletePatient(pid){
       await window.fs.deleteDoc(window.fs.doc(window.db, "patients", docId));
       toast(`Patient ${pid} deleted permanently`);
     } catch (err) {
-      console.error("Error deleting from Firestore:", err);
-      toast("Deleted locally, cloud delete failed");
+      toast("Deleted locally");
     }
   } else {
     toast(`Patient ${pid} deleted locally`);
@@ -800,48 +704,40 @@ async function deletePatient(pid){
 function alertsView(){
   const rows=computeOverdue();
   return `<div class="card">
-    <div class="flexb mb"><h3>⚠️ Vaccination Due / Overdue <span class="badge">${rows.length}</span></h3></div>
-    <p class="sub">Doctor-set next-vaccination dates that are overdue, due today, or due within the next 7 days.</p>
-    ${rows.length?`<table><tr><th>Patient</th><th>Phone</th><th>Vaccine</th><th>Due</th><th>Status</th><th>Reminder</th></tr>${rows.map(r=>`<tr><td><b>${esc(r.name)}</b><div class="tiny mono">${r.patient_id}</div></td><td>${esc(r.phone||"—")}</td><td>${esc(r.vaccine||"Next dose")}</td><td class="mono tiny">${r.due_date}</td><td>${statusBadge(r)}</td><td>${r.phone?`<a class="btn btn-o btn-sm" target="_blank" href="https://wa.me/${encodeURIComponent(r.phone)}?text=${encodeURIComponent('Reminder from Vishwa Hospital: '+r.name+"'s vaccination ("+(r.vaccine||'next dose')+') is due on '+r.due_date+'.')}">WhatsApp</a>`:""}</td></tr>`).join("")}</table>`:'<div class="empty">💉 No vaccinations due. Doctors set next-due dates from the Doctor module.</div>'}
+    <h3>⚠️ Vaccine Alerts <span class="badge">${rows.length}</span></h3>
+    ${rows.length?`<table><tr><th>Patient</th><th>Vaccine</th><th>Due</th><th>Status</th></tr>${rows.map(r=>`<tr><td><b>${esc(r.name)}</b><div class="tiny mono">${r.patient_id}</div></td><td>${esc(r.vaccine||"Next dose")}</td><td class="mono tiny">${r.due_date}</td><td>${r.status}</td></tr>`).join("")}</table>`:'<div class="empty">No vaccinations due.</div>'}
   </div>`;
 }
-function statusBadge(r){ if(r.status==="overdue")return `<span class="pill" style="background:#FEE2E2;color:#B91C1C">${r.days} days overdue</span>`; if(r.status==="due_today")return `<span class="pill p-followup">Due today</span>`; return `<span class="pill p-subsequent">Due in ${-r.days} days</span>`; }
+
 function computeOverdue(){
   const today=parseD(todayISO()), horizon=addOffset(today,"day",7); const out=[];
-  loadPatients().forEach(p=>{ const nv=p.next_vaccination; if(!nv||!nv.due_date)return; const due=parseD(nv.due_date); if(!due||due>horizon)return; const days=Math.round((today-due)/(1000*60*60*24)); out.push({patient_id:p.patient_id,name:p.name,phone:p.phone,vaccine:nv.vaccine,note:nv.note,due_date:nv.due_date,days,status:due<today?"overdue":(+due===+today:"due_today":"upcoming")}); });
-  out.sort((a,b)=>b.days-a.days); return out;
-}
+  loadPatients().forEach(p=>{ const nv=p.next_vaccination; if(!nv||!nv.due_date)return; const due=parseD(nv.due_date); if(!due||due>horizon)return; const days=Math.round((today-due)/(1000*60*60*24)); out.push({patient_id:p.patient_id,name:p.name,phone:p.phone,vaccine:nv.vaccine,note:nv.note,due_date:nv.due_date,days,status:due<today?"overdue":(due.getTime()===today.getTime()?"due_today":"upcoming")}); });
+  out.sort((a,b)=>b.days-a.days); return out; }
 
-/* ============ SETTINGS MODULE & FACTORY RESET ============ */
+/* ============ SETTINGS MODULE ============ */
 let SETTINGS_UNLOCKED = false;
 
 function settingsView() {
-  if (!SETTINGS_UNLOCKED) return `<div class="card" style="max-width:420px;margin:30px auto;text-align:center">
-    <div style="font-size:30px">⚙️</div><h3>Settings & Management</h3><p class="sub">Enter password to access deletion & database reset features.</p>
+  if (!SETTINGS_UNLOCKED) return `<div class="card" style="max-width:380px;margin:20px auto;text-align:center">
+    <div style="font-size:28px">⚙️</div><h3>Settings & Management</h3><p class="sub">Enter password to access deletion & reset features.</p>
     <input id="settings_pw" type="password" placeholder="Password (654321)" style="text-align:center" onkeydown="if(event.key==='Enter')unlockSettings()"/>
     <div class="mt"><button class="btn btn-p" style="width:100%" onclick="unlockSettings()">Unlock Settings</button></div></div>`;
 
   return `<div class="card">
-    <h3>⚙️ Database & Patient Management</h3>
-    <p class="sub">Manage patient records or perform database administrative actions.</p>
-    
+    <h3>⚙️ Database Management</h3>
     <div class="divider"></div>
-    
-    <div style="margin-bottom: 24px;">
-      <h4 style="margin:0 0 6px;color:#1E1B4B">🔍 Delete Individual Patient</h4>
-      <p class="tiny">Search for a patient by ID or name to delete their record locally and from Cloud Firestore.</p>
-      <div style="display:flex;gap:12px;margin-top:10px;">
-        <input id="set_del_q" placeholder="Enter Patient ID (e.g. 0001/26) or Name" onkeydown="if(event.key==='Enter')searchDeletePatient()"/>
+    <div>
+      <h4 style="margin:0 0 6px;">Delete Individual Patient</h4>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <input id="set_del_q" placeholder="Enter Patient ID or Name" onkeydown="if(event.key==='Enter')searchDeletePatient()"/>
         <button class="btn btn-p" onclick="searchDeletePatient()">Search</button>
       </div>
       <div id="set_del_results" class="mt"></div>
     </div>
-
     <div class="divider"></div>
-
-    <div style="background:#FEF2F2;border:1px solid #FCA5A5;padding:20px;border-radius:14px;">
+    <div style="background:#FEF2F2;border:1px solid #FCA5A5;padding:16px;border-radius:12px;">
       <h4 style="margin:0 0 6px;color:#991B1B">🚨 Factory Reset Database</h4>
-      <p class="tiny" style="color:#7F1D1D">Warning: This action will permanently erase ALL patient records, visit histories, and counter sequences from BOTH local browser memory and Cloud Firestore!</p>
+      <p class="tiny" style="color:#7F1D1D">Permanently erases ALL local and Cloud Firestore patient records!</p>
       <div class="mt"><button class="btn btn-danger" onclick="factoryResetDatabase()">🚨 Perform Factory Reset</button></div>
     </div>
   </div>`;
@@ -862,19 +758,19 @@ function searchDeletePatient() {
   const el = document.getElementById("set_del_results");
   if (!res.length) { el.innerHTML = `<p class="tiny">No matching patient found.</p>`; return; }
   el.innerHTML = res.map(p => `<div class="qcard">
-    <div><b>${esc(p.name)}</b> <span class="badge mono">${p.patient_id}</span><div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)}</div></div>
+    <div><b>${esc(p.name)}</b> <span class="badge mono">${p.patient_id}</span></div>
     <button class="btn btn-danger btn-sm" onclick="deletePatient('${p.patient_id}')">🗑️ Delete</button>
   </div>`).join("");
 }
 
 async function factoryResetDatabase() {
-  const pw = prompt("SECURITY CONFIRMATION: Re-enter password (654321) to confirm Factory Reset:");
+  const pw = prompt("Re-enter password (654321) to confirm Factory Reset:");
   if (pw !== "654321") {
-    if (pw !== null) toast("Incorrect password - Reset aborted");
+    if (pw !== null) toast("Incorrect password");
     return;
   }
 
-  if (!confirm("CRITICAL WARNING: Are you ABSOLUTELY sure? ALL local and cloud data will be destroyed forever!")) return;
+  if (!confirm("Are you ABSOLUTELY sure? ALL data will be wiped!")) return;
 
   safeRemoveItem(LS_P);
   safeRemoveItem(LS_C);
@@ -882,118 +778,43 @@ async function factoryResetDatabase() {
   if (window.db && window.fs) {
     try {
       const querySnapshot = await window.fs.getDocs(window.fs.collection(window.db, "patients"));
-      for (const document of querySnapshot.docs) {
-        await window.fs.deleteDoc(window.fs.doc(window.db, "patients", document.id));
+      for (const docSnapshot of querySnapshot.docs) {
+        await window.fs.deleteDoc(window.fs.doc(window.db, "patients", docSnapshot.id));
       }
-      toast("Factory Reset Complete: Local & Cloud wiped");
+      toast("Database wiped completely");
     } catch (err) {
-      console.error("Cloud wipe error:", err);
-      toast("Local wiped, but cloud wipe encountered an error");
+      toast("Local wiped, cloud wipe failed");
     }
   } else {
-    toast("Local database wiped successfully");
+    toast("Local wiped");
   }
 
   render();
 }
 
-/* ============ EDIT / VISIT / IMMUNIZATION MODALS ============ */
-function openEdit(pid){ const p=getP(pid); showModal(`<h2>Edit Patient Details</h2>
-  <div class="field mb"><label class="lbl">Name</label><input id="e_name" value="${esc(p.name)}"/></div>
-  <div class="row">
-    <div class="field"><label class="lbl">Age</label><div id="e_agebox">${ageFieldHTML("e_age",p.dob,p.age)}</div></div>
-    <div class="field"><label class="lbl">Sex</label><select id="e_sex">${["Male","Female","Other"].map(s=>`<option ${p.sex===s?"selected":""}>${s}</option>`).join("")}</select></div>
-  </div>
-  <div class="row mt">
-    <div class="field"><label class="lbl">Phone</label><input id="e_phone" value="${esc(p.phone||"")}"/></div>
-    <div class="field"><label class="lbl">Date of Birth</label><input id="e_dob" type="date" max="${todayISO()}" value="${esc(p.dob||"")}" onchange="document.getElementById('e_agebox').innerHTML=ageFieldHTML('e_age',this.value,'')"/></div>
-  </div>
-  <div class="right mt"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveEdit('${pid}')">💾 Save</button></div>`);
-}
-function saveEdit(pid){
-  const dob=val("e_dob"); const ag=readAge("e_age",dob); const p=getP(pid);
-  const dobChanged=dob!==(p.dob||"");
-  updateP(pid,x=>{ x.name=val("e_name"); x.sex=val("e_sex"); x.phone=val("e_phone"); x.age=ag.age; x.age_recorded_at=dob?"":todayISO(); x.dob=dob; if(dobChanged&&dob){ x.vaccinations=buildSchedule(dob,x.vaccinations); } });
-  closeModal(); toast("Patient updated"); if(TAB==="staff")selectPatient(pid);
-}
-function openNewVisit(pid){ const p=getP(pid); const v=emptyVisit(); v.patient_category="old"; window._nv=v; showModal(`<h2>New Visit • ${esc(p.name)} <span class="badge mono">${pid}</span></h2>
-  <p class="sub">Categorise the visit (Fresh / Follow-up / Subsequent), record vitals, then send to the doctor's queue.</p>
-  <div class="row">
-    <div class="field"><label class="lbl">Date of Visit</label><input id="nv_dov" type="date" value="${todayISO()}"/></div>
-    <div class="field"><label class="lbl">Visit Type <span class="opt">(categorise)</span></label><select id="nv_type"><option value="fresh">Fresh</option><option value="followup">Follow-up</option><option value="subsequent">Subsequent</option></select></div>
-  </div>
-  <div class="row4 mt">
-    <div class="field"><label class="lbl">Height</label><input id="nv_ht" placeholder="cm"/></div>
-    <div class="field"><label class="lbl">Weight</label><input id="nv_wt" placeholder="kg"/></div>
-    <div class="field"><label class="lbl">Head Circ.</label><input id="nv_hc" placeholder="cm"/></div>
-    <div class="field"><label class="lbl">BP</label><input id="nv_bp" placeholder="90/60"/></div>
-  </div>
-  <div class="right mt"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveNewVisit('${pid}')">📨 Send to Doctor</button></div>`);
-}
-function saveNewVisit(pid){
-  const v=window._nv; v.date_of_visit=val("nv_dov")||todayISO(); v.visit_type=val("nv_type"); v.ht=val("nv_ht");v.wt=val("nv_wt");v.hc=val("nv_hc");v.bp=val("nv_bp"); v.status="waiting";
-  updateP(pid,x=>x.visits.push(v)); closeModal(); toast("Visit sent to doctor"); selectPatient(pid);
-}
-
-function openImmun(pid){ renderImmun(pid); }
-function renderImmun(pid){
-  const p=getP(pid);
-  if(!p.dob&&(!p.vaccinations||!p.vaccinations.length)){
-    showModal(`<h2>💉 Immunization • ${esc(p.name)}</h2><div class="empty" style="padding:34px">No schedule yet. Set the child's Date of Birth to auto-generate the calendar.<div class="mt" style="display:flex;gap:8px;justify-content:center"><input id="im_dob" type="date" max="${todayISO()}" style="width:auto"/><button class="btn btn-p btn-sm" onclick="genImmun('${pid}')">Generate</button></div></div>`,true);
-    return;
-  }
-  const rows=p.vaccinations||[]; const today=todayISO();
-  const nv=p.next_vaccination||{};
-  let grp=[],cur=null;
-  rows.forEach((r,i)=>{ r._i=i; if(!cur||cur.label!==r.age_label){cur={label:r.age_label,items:[r]};grp.push(cur);} else cur.items.push(r); });
-  const body=`<h2>💉 Immunization • ${esc(p.name)} <span class="badge mono">${pid}</span></h2>
-  <p class="tiny">DOB: ${esc(p.dob||"-")}</p>
-  <div class="nutshell" style="border-color:#C7D2FE;background:#EEF2FF">
-    <div class="nt-h" style="color:#4338CA">Doctor's Next Vaccination Due (drives the staff overdue alert)</div>
-    <div class="row3">
-      <div class="field"><label class="lbl">Vaccine</label><input id="nv_vac" value="${esc(nv.vaccine||"")}" placeholder="e.g. 9th month - MMR"/></div>
-      <div class="field"><label class="lbl">Due Date</label><input id="nv_due" type="date" value="${esc(nv.due_date||"")}"/></div>
-      <div class="field"><label class="lbl">Note</label><input id="nv_note" value="${esc(nv.note||"")}" placeholder="optional"/></div>
-    </div>
-    <div class="right mt"><button class="btn btn-p btn-sm" onclick="saveNextVacc('${pid}')">💾 Save Next Due</button></div>
-  </div>
-  <div style="max-height:52vh;overflow:auto;border:1px solid var(--line);border-radius:12px">
-  <table class="vtable"><tr><th>Age</th><th>Vaccine</th><th>Due</th><th>Given</th><th>Batch</th><th>Remarks</th></tr>
-  ${grp.map(g=>g.items.map((r,gi)=>`<tr>
-    <td>${gi===0?esc(g.label):""}</td>
-    <td>${r.given_date?"✅ ":""}${(!r.given_date&&r.due_date&&r.due_date<today)?'⚠️ ':''}${esc(r.vaccine)}</td>
-    <td class="mono ${(!r.given_date&&r.due_date&&r.due_date<today)?'overdue':'tiny'}">${r.due_date}</td>
-    <td><input type="date" value="${esc(r.given_date||"")}" style="padding:4px 6px" onchange="setVacc('${pid}',${r._i},'given_date',this.value)"/></td>
-    <td><input value="${esc(r.batch_no||"")}" style="padding:4px 6px;width:80px" onchange="setVacc('${pid}',${r._i},'batch_no',this.value)"/></td>
-    <td><input value="${esc(r.remarks||"")}" style="padding:4px 6px;width:110px" onchange="setVacc('${pid}',${r._i},'remarks',this.value)"/></td>
-  </tr>`).join("")).join("")}
-  </table></div>`;
-  showModal(body,true);
-}
-function genImmun(pid){ const dob=val("im_dob"); if(!dob){toast("Select DOB");return;} updateP(pid,x=>{x.dob=dob;x.age_recorded_at="";x.age=formatAge(ageFromDob(dob).years,ageFromDob(dob).months);x.vaccinations=buildSchedule(dob,x.vaccinations);}); renderImmun(pid); toast("Schedule generated"); }
-function setVacc(pid,idx,field,v){ updateP(pid,x=>{ x.vaccinations[idx][field]=v; if(field==="given_date"&&v)reflowSchedule(x.vaccinations,x.dob); }); renderImmun(pid); }
-function saveNextVacc(pid){ const due=val("nv_due"); if(!due){toast("Enter a due date");return;} updateP(pid,x=>x.next_vaccination={vaccine:val("nv_vac"),due_date:due,note:val("nv_note")}); toast("Next due saved"); renderImmun(pid); }
-
 /* ============ DOCTOR MODULE ============ */
 let DOC_UNLOCKED=false, DOC_TAB="waiting", DOC_FILTER="", DOC_TODAY=true;
+
 function doctorView(){
-  if(!DOC_UNLOCKED) return `<div class="card" style="max-width:420px;margin:30px auto;text-align:center">
-    <div style="font-size:30px">🔒</div><h3>Doctor Module</h3><p class="sub">Enter password to access clinical records.</p>
+  if(!DOC_UNLOCKED) return `<div class="card" style="max-width:380px;margin:20px auto;text-align:center">
+    <div style="font-size:28px">🔒</div><h3>Doctor Module</h3><p class="sub">Enter password to access clinical records.</p>
     <input id="doc_pw" type="password" placeholder="Password (123456)" style="text-align:center" onkeydown="if(event.key==='Enter')unlockDoc()"/>
     <div class="mt"><button class="btn btn-p" style="width:100%" onclick="unlockDoc()">Unlock</button></div></div>`;
-  const items=queueItems(DOC_TAB);
-  return `<div class="card mb"><div class="flexb"><input id="doc_filter" value="${esc(DOC_FILTER)}" placeholder="Filter by ID, phone or name" style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter'){DOC_FILTER=this.value;render()}"/>
-    <label class="tiny" style="display:flex;gap:6px;align-items:center"><input type="checkbox" ${DOC_TODAY?"checked":""} style="width:auto" onchange="DOC_TODAY=this.checked;render()"/> Today only</label>
+  
+  const items = queueItems(DOC_TAB);
+  return `<div class="card mb"><div class="flexb"><input id="doc_filter" value="${esc(DOC_FILTER)}" placeholder="Filter by ID, phone or name" style="flex:1;min-width:180px" onkeydown="if(event.key==='Enter'){DOC_FILTER=this.value;render()}"/>
     <button class="btn btn-o btn-sm" onclick="DOC_FILTER=document.getElementById('doc_filter').value;render()">Apply</button></div></div>
     <div class="subtabs">
       <button class="subtab ${DOC_TAB==="waiting"?"active":""}" onclick="DOC_TAB='waiting';render()">⏳ Waiting <span class="badge">${queueItems('waiting').length}</span></button>
       <button class="subtab ${DOC_TAB==="treated"?"active":""}" onclick="DOC_TAB='treated';render()">✅ Treated <span class="badge">${queueItems('treated').length}</span></button>
     </div>
-    ${items.length?items.map((it,i)=>qcard(it,i+1,DOC_TAB==="treated")).join(""):`<div class="empty">${DOC_TAB==="waiting"?"No patients waiting. Newly registered patients appear here.":"No treated patients."}</div>`}`;
+    ${items.length?items.map((it,i)=>qcard(it,i+1,DOC_TAB==="treated")).join(""):`<div class="empty">${DOC_TAB==="waiting"?"No patients waiting.":"No treated patients."}</div>`}`;
 }
 
-// DOCTOR MODULE PASSWORD: 123456
-function unlockDoc(){ if(val("doc_pw")==="123456"){DOC_UNLOCKED=true;render();}else toast("Incorrect password (use 123456)"); }
+function unlockDoc(){ 
+  if(val("doc_pw")==="123456"){ DOC_UNLOCKED=true; render(); }
+  else toast("Incorrect password (use 123456)"); 
+}
 
 function queueItems(status){
   const f=DOC_FILTER.trim().toLowerCase(), today=todayISO(); const out=[];
@@ -1001,110 +822,84 @@ function queueItems(status){
     (p.visits||[]).forEach(v=>{ if((v.status||"waiting")!==status)return; if(DOC_TODAY&&(v.date_of_visit||"").slice(0,10)!==today)return; out.push({p,v}); }); });
   return out;
 }
+
 function qcard(it,token,treated){
   const p=it.p,v=it.v;
   return `<div class="qcard">
-    <div style="display:flex;align-items:center;gap:12px;min-width:0">
-      ${treated?'<div class="tick">✓</div>':`<div class="token"><span class="t1">Token</span><span class="t2">${token}</span></div>`}
-      <div><div><b>${esc(p.name)}</b> <span class="badge mono">${p.patient_id}</span> <span class="pill p-${v.visit_type}">${v.visit_type}</span></div>
-      <div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)} ${p.phone?"• "+esc(p.phone):""} • <span class="mono">${v.date_of_visit}</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px;min-width:0">
+      <div class="token"><span class="t1">Token</span><span class="t2">${token}</span></div>
+      <div><div><b>${esc(p.name)}</b> <span class="badge mono">${p.patient_id}</span></div>
+      <div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)}</div></div>
     </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <div style="display:flex;gap:4px;">
       <button class="btn btn-g btn-sm" title="Vaccination" onclick="openImmun('${p.patient_id}')">💉</button>
       <button class="btn btn-g btn-sm" title="Growth" onclick="openGrowth('${p.patient_id}')">📈</button>
-      <button class="btn btn-g btn-sm" title="Print history" onclick="printHistory('${p.patient_id}')">🖨️</button>
-      ${treated?`<button class="btn btn-g btn-sm" title="Back to waiting" onclick="revertVisit('${p.patient_id}','${v.id}')">↩️</button>`:""}
-      <button class="btn btn-p btn-sm" onclick="openTreat('${p.patient_id}','${v.id}')">🩺 ${treated?"View / Edit":"Attend"}</button>
+      <button class="btn btn-p btn-sm" onclick="openTreat('${p.patient_id}','${v.id}')">🩺 Attend</button>
     </div></div>`;
 }
-function revertVisit(pid,vid){ updateP(pid,x=>{const v=x.visits.find(v=>v.id===vid);if(v)v.status="waiting";}); toast("Moved to waiting"); render(); }
-function openGrowth(pid){ const p=getP(pid); showModal(`<h2>📈 Growth Tracking • ${esc(p.name)} <span class="badge mono">${pid}</span></h2>${growthHTML(p)}<div class="right mt"><button class="btn btn-o" onclick="closeModal()">Close</button><button class="btn btn-p" onclick="printHistory('${pid}')">🖨️ Print History</button></div>`,true); }
+
+function openGrowth(pid){ const p=getP(pid); showModal(`<h2>📈 Growth Tracking • ${esc(p.name)}</h2>${growthHTML(p)}<div class="right mt"><button class="btn btn-o" onclick="closeModal()">Close</button></div>`,true); }
+
 function openTreat(pid,vid){
   const p=getP(pid); const v=p.visits.find(v=>v.id===vid); treatCtx={pid,vid};
-  const past=(p.visits||[]).filter(x=>x.id!==vid&&x.status==="treated").sort((a,b)=>(b.date_of_visit||"").localeCompare(a.date_of_visit||""));
-  const nutshell=past.length?`<div class="nutshell"><div class="nt-h">Previous Treatment Records (${past.length})</div>${past.map(x=>{const ex=x.examination||{};const pos=EXAM.filter(([k])=>(ex[k]||"").trim()).map(([k,l])=>l+": "+ex[k]);return `<div class="nrec"><span class="tiny mono">${x.date_of_visit}</span> <span class="pill p-${x.visit_type}">${x.visit_type}</span>${x.complaints?`<div><b>Complaints:</b> ${esc(x.complaints)}</div>`:""}${pos.length?`<div><b>Findings:</b> ${esc(pos.join(" | "))}</div>`:""}${x.treatment?`<div><b>Treatment:</b> ${esc(x.treatment)}</div>`:""}</div>`;}).join("")}</div>`:"";
-  showModal(`<h2>🩺 ${esc(p.name)} • ${pid} <span class="tiny">(${v.date_of_visit})</span></h2>
-  ${nutshell}
-  <div class="field mb"><label class="lbl">Complaints</label><textarea id="t_comp" rows="3">${esc(v.complaints||"")}</textarea></div>
-  <div class="lbl mb">Examination <span class="opt">(optional)</span></div>
-  <div class="exrow">${EXAM.map(([k,l])=>`<div class="exbox"><label class="lbl" style="letter-spacing:normal">${l}</label><textarea id="t_${k}" rows="2">${esc(v.examination&&v.examination[k]||"")}</textarea></div>`).join("")}</div>
-  <div class="field mt"><label class="lbl">Treatment</label><textarea id="t_treat" rows="4">${esc(v.treatment||"")}</textarea></div>
+  showModal(`<h2>🩺 ${esc(p.name)} • ${pid}</h2>
+  <div class="field mb"><label class="lbl">Complaints</label><textarea id="t_comp" rows="2">${esc(v.complaints||"")}</textarea></div>
+  <div class="field mt"><label class="lbl">Treatment</label><textarea id="t_treat" rows="3">${esc(v.treatment||"")}</textarea></div>
   <div class="right mt"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveTreat()">💾 Save & Mark Treated</button></div>`);
 }
+
 function saveTreat(){
   const {pid,vid}=treatCtx;
-  updateP(pid,x=>{ const v=x.visits.find(v=>v.id===vid); v.complaints=val("t_comp"); v.treatment=val("t_treat"); EXAM.forEach(([k])=>v.examination[k]=val("t_"+k)); v.status="treated"; });
-  closeModal(); toast("Saved • marked treated"); DOC_TAB="treated"; render();
+  updateP(pid,x=>{ const v=x.visits.find(v=>v.id===vid); v.complaints=val("t_comp"); v.treatment=val("t_treat"); v.status="treated"; });
+  closeModal(); toast("Saved"); DOC_TAB="treated"; render();
 }
 
-/* ============ PRINT PATIENT HISTORY ============ */
-function printHistory(pid){
-  const p=getP(pid); const age=displayAge(p);
-  const css=`body{font-family:Segoe UI,Arial,sans-serif;color:#1E293B;padding:28px} .b{color:#4F46E5;font-size:26px;font-weight:800;margin:0} .s{color:#64748B;font-size:13px} .info{display:flex;flex-wrap:wrap;gap:8px 26px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px;margin:12px 0} .info span{display:block;font-size:11px;color:#4F46E5;font-weight:700;text-transform:uppercase} .v{border:1px solid #E2E8F0;border-radius:10px;padding:14px;margin-bottom:10px} .vh{color:#4F46E5;font-weight:700} ul{margin:4px 0 4px 18px}`;
-  const vis=(p.visits||[]).map((v,i)=>{const ex=v.examination||{};const pos=EXAM.filter(([k])=>(ex[k]||"").trim()).map(([k,l])=>`<li><b>${l}:</b> ${esc(ex[k])}</li>`).join("");return `<div class="v"><div class="vh">Visit ${i+1} • ${v.date_of_visit} • ${v.visit_type} • ${v.patient_category} patient</div><p><b>Vitals:</b> Ht ${esc(v.ht||"-")} | Wt ${esc(v.wt||"-")} | HC ${esc(v.hc||"-")} | BP ${esc(v.bp||"-")}</p><p><b>Complaints:</b> ${esc(v.complaints||"-")}</p>${pos?`<p><b>Examination:</b></p><ul>${pos}</ul>`:""}<p><b>Treatment:</b> ${esc(v.treatment||"-")}</p></div>`;}).join("");
-  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(p.name)} - History</title><style>${css}</style></head><body><p class="b">Vishwa Hospital</p><p class="s">Patient Visit History</p><div class="info"><div><span>Patient ID</span>${p.patient_id}</div><div><span>Name</span>${esc(p.name)}</div><div><span>Age</span>${esc(age)}</div><div><span>Sex</span>${esc(p.sex)}</div><div><span>Phone</span>${esc(p.phone||"-")}</div><div><span>DOB</span>${esc(p.dob||"-")}</div></div>${vis||"<p>No visits.</p>"}<script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>`;
-  const w=window.open("","_blank"); w.document.write(html); w.document.close();
+function openImmun(pid){ renderImmun(pid); }
+function renderImmun(pid){
+  const p=getP(pid);
+  if(!p.dob&&(!p.vaccinations||!p.vaccinations.length)){
+    showModal(`<h2>💉 Immunization • ${esc(p.name)}</h2><div class="empty" style="padding:24px">Set DOB to generate schedule.<div class="mt"><input id="im_dob" type="date" max="${todayISO()}" style="width:auto"/><button class="btn btn-p btn-sm" onclick="genImmun('${pid}')">Generate</button></div></div>`,true);
+    return;
+  }
+  const rows=p.vaccinations||[];
+  showModal(`<h2>💉 Immunization • ${esc(p.name)}</h2><div style="max-height:50vh;overflow:auto;"><table class="vtable"><tr><th>Age</th><th>Vaccine</th><th>Due</th><th>Given</th></tr>${rows.map(r=>`<tr><td>${esc(r.age_label)}</td><td>${esc(r.vaccine)}</td><td>${esc(r.due_date)}</td><td>${esc(r.given_date||"-")}</td></tr>`).join("")}</table></div>`,true);
 }
+function genImmun(pid){ const dob=val("im_dob"); if(!dob){toast("Select DOB");return;} updateP(pid,x=>{x.dob=dob;x.vaccinations=buildSchedule(dob,x.vaccinations);}); renderImmun(pid); }
 
 /* ============ REPORTS MODULE ============ */
-let RS=addDays(-29), RE=todayISO();
-function addDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toLocaleDateString("en-CA"); }
-function reportData(){
-  const rows=[]; loadPatients().forEach(p=>{ (p.visits||[]).forEach(v=>{ const d=(v.date_of_visit||"").slice(0,10); if(d&&d>=RS&&d<=RE)rows.push({patient_id:p.patient_id,name:p.name,age:displayAge(p),sex:p.sex,date:d,type:v.visit_type,cat:v.patient_category}); }); });
-  rows.sort((a,b)=>a.date.localeCompare(b.date));
-  const s={total:rows.length,new:0,old:0,fresh:0,followup:0,subsequent:0};
-  rows.forEach(r=>{ if(r.cat==="new")s.new++;else s.old++; if(s[r.type]!=null)s[r.type]++; });
-  return {rows,s};
-}
 function reportsView(){
-  const {rows,s}=reportData();
-  return `<div class="card mb"><div class="flexb">
-    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
-      <div class="field"><label class="lbl">From</label><input type="date" id="rp_s" value="${RS}" onchange="RS=this.value;render()"/></div>
-      <div class="field"><label class="lbl">To</label><input type="date" id="rp_e" value="${RE}" onchange="RE=this.value;render()"/></div>
-      <button class="btn btn-o btn-sm" onclick="RS=todayISO();RE=todayISO();render()">Today</button>
-      <button class="btn btn-o btn-sm" onclick="RS=addDays(-6);RE=todayISO();render()">This Week</button>
-      <button class="btn btn-o btn-sm" onclick="RS=addDays(-29);RE=todayISO();render()">This Month</button>
-    </div>
-    <button class="btn btn-a" onclick="printReport()">🖨️ Print / Save PDF</button>
-  </div></div>
-  <div class="metrics">
-    ${metric("Total Attended",s.total)}${metric("New Patients",s.new)}${metric("Old Patients",s.old)}${metric("Fresh",s.fresh)}${metric("Follow-up",s.followup)}${metric("Subsequent",s.subsequent)}
-  </div>
-  <div class="card"><div class="flexb mb"><h3>Patient List</h3><span class="tiny">${rows.length} record(s)</span></div>
-  <div style="max-height:460px;overflow:auto"><table><tr><th>ID</th><th>Name</th><th>Age</th><th>Sex</th><th>Date</th><th>Type</th><th>Category</th></tr>
-  ${rows.length?rows.map(r=>`<tr><td class="mono">${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(r.age)}</td><td>${esc(r.sex)}</td><td class="mono tiny">${r.date}</td><td style="text-transform:capitalize">${r.type}</td><td>${r.cat==="new"?"New":"Old"}</td></tr>`).join(""):'<tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:24px">No records for this range.</td></tr>'}</table></div></div>`;
-}
-function metric(l,v){ return `<div class="metric"><div class="m-l">${l}</div><div class="m-v">${v}</div></div>`; }
-function printReport(){
-  const {rows,s}=reportData();
-  const css=`body{font-family:Segoe UI,Arial,sans-serif;color:#1E293B;padding:28px}.b{color:#4F46E5;font-size:26px;font-weight:800;margin:0}.s{color:#64748B;font-size:13px}.cards{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.c{border:1px solid #E2E8F0;border-radius:10px;padding:12px 16px;min-width:140px}.c .l{font-size:11px;text-transform:uppercase;color:#64748B;font-weight:700}.c .v{font-size:26px;font-weight:800}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#4F46E5;color:#fff;text-align:left;padding:8px}td{padding:7px;border-bottom:1px solid #E2E8F0}`;
-  const cards=[["Total Attended",s.total],["New",s.new],["Old",s.old],["Fresh",s.fresh],["Follow-up",s.followup],["Subsequent",s.subsequent]].map(c=>`<div class="c"><div class="l">${c[0]}</div><div class="v">${c[1]}</div></div>`).join("");
-  const tr=rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(r.age)}</td><td>${esc(r.sex)}</td><td>${r.date}</td><td>${r.type}</td><td>${r.cat}</td></tr>`).join("");
-  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Vishwa Hospital Report</title><style>${css}</style></head><body><p class="b">Vishwa Hospital</p><p class="s">Patient Report — ${RS} to ${RE}</p><div class="cards">${cards}</div><h3>Patient List</h3><table><tr><th>#</th><th>ID</th><th>Name</th><th>Age</th><th>Sex</th><th>Date</th><th>Type</th><th>Category</th></tr>${tr||'<tr><td colspan=8>No records</td></tr>'}</table><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>`;
-  const w=window.open("","_blank"); w.document.write(html); w.document.close();
+  const rows = loadPatients();
+  return `<div class="card">
+    <h3>📊 Patient Reports</h3>
+    <p class="sub">Total Patients Registered: <b>${rows.length}</b></p>
+    <table><tr><th>ID</th><th>Name</th><th>Age</th><th>Sex</th></tr>
+    ${rows.length?rows.map(r=>`<tr><td class="mono">${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(displayAge(r))}</td><td>${esc(r.sex)}</td></tr>`).join(""):'<tr><td colspan="4" style="text-align:center;padding:20px">No records found.</td></tr>'}
+    </table>
+  </div>`;
 }
 
-/* ============ MANUAL BACKUP / RESTORE ============ */
-function backupData(){
-  const data={patients:loadPatients(),counter:JSON.parse(safeGetItem(LS_C)||"{}"),exported_at:new Date().toISOString()};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="vishwa_hospital_backup_"+todayISO()+".json"; a.click();
-  toast("Backup downloaded");
-}
-function restoreData(input){
-  const f=input.files[0]; if(!f)return; const rd=new FileReader();
-  rd.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d.patients)throw 0; if(!confirm("This will REPLACE all current data with the backup. Continue?"))return; savePatients(d.patients); if(d.counter)safeSetItem(LS_C,JSON.stringify(d.counter)); toast("Data restored"); render(); }catch(err){ toast("Invalid backup file"); } };
-  rd.readAsText(f); input.value="";
-}
+/* ============ MODALS & UTILS ============ */
+function openEdit(pid){ const p=getP(pid); showModal(`<h2>Edit Patient</h2><div class="field mb"><label class="lbl">Name</label><input id="e_name" value="${esc(p.name)}"/></div><div class="right mt"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveEdit('${pid}')">Save</button></div>`); }
+function saveEdit(pid){ updateP(pid,x=>{x.name=val("e_name");}); closeModal(); toast("Updated"); selectPatient(pid); }
 
-/* ============ INTERFACE HELPERS ============ */
+function openNewVisit(pid){ const v=emptyVisit(); updateP(pid,x=>x.visits.push(v)); toast("Visit added"); selectPatient(pid); }
+
 function val(id){ const e=document.getElementById(id); return e?e.value.trim():""; }
 function showModal(html,wide){ const m=document.getElementById("modal"); m.className="modal"+(wide?" wide":""); m.innerHTML=html; document.getElementById("overlay").classList.add("show"); }
 function closeModal(){ document.getElementById("overlay").classList.remove("show"); }
-function afterRender(){}
 
-// INITIAL RENDER CALL
+function backupData(){
+  const data={patients:loadPatients(),exported_at:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="vishwa_hospital_backup.json"; a.click();
+}
+
+function restoreData(input){
+  const f=input.files[0]; if(!f)return; const rd=new FileReader();
+  rd.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d.patients)throw 0; savePatients(d.patients); toast("Data restored"); render(); }catch(err){ toast("Invalid backup"); } };
+  rd.readAsText(f); input.value="";
+}
+
 render();
 </script>
   </body>
