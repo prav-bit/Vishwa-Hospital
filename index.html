@@ -211,18 +211,28 @@ function loadPatients(){
   try{ return JSON.parse(safeGetItem(LS_P)) || [] }catch(e){ return [] } 
 }
 
-function savePatients(p){ 
+// ENHANCED FIRESTORE ASYNC WRITE (REASON 2 FIX)
+async function savePatients(p){ 
   safeSetItem(LS_P, JSON.stringify(p)); 
 
   if (window.db && window.fs) {
-    p.forEach(patient => {
-      window.fs.setDoc(window.fs.doc(window.db, "patients", patient.patient_id), patient, { merge: true })
-        .then(() => setCloudStatus(true))
-        .catch(err => {
-          console.error("Firestore sync error:", err);
-          setCloudStatus(false);
-        });
-    });
+    try {
+      for (const patient of p) {
+        // Clean JSON payload and sanitize document keys
+        const cleanPatient = JSON.parse(JSON.stringify(patient));
+        const docId = String(patient.patient_id).replace(/\//g, "_");
+        
+        await window.fs.setDoc(
+          window.fs.doc(window.db, "patients", docId), 
+          cleanPatient, 
+          { merge: true }
+        );
+      }
+      setCloudStatus(true);
+    } catch (err) {
+      console.error("Firestore sync error:", err);
+      setCloudStatus(false);
+    }
   } else {
     setCloudStatus(false);
   }
@@ -240,7 +250,7 @@ async function syncFromFirestore(notify = false) {
       remotePatients.push(doc.data());
     });
     
-    setCloudStatus(true); // Green dot when successful
+    setCloudStatus(true);
 
     if (remotePatients.length > 0) {
       safeSetItem(LS_P, JSON.stringify(remotePatients));
@@ -249,7 +259,7 @@ async function syncFromFirestore(notify = false) {
     if (notify) toast("Synced with Cloud Firestore");
   } catch (err) {
     console.error("Error pulling from Firestore:", err);
-    setCloudStatus(false); // Red dot when error occurs
+    setCloudStatus(false);
     if (notify) toast("Cloud sync failed (check internet or rules)");
   }
 }
@@ -485,8 +495,7 @@ function statusBadge(r){ if(r.status==="overdue")return `<span class="pill" styl
 function computeOverdue(){
   const today=parseD(todayISO()), horizon=addOffset(today,"day",7); const out=[];
   loadPatients().forEach(p=>{ const nv=p.next_vaccination; if(!nv||!nv.due_date)return; const due=parseD(nv.due_date); if(!due||due>horizon)return; const days=Math.round((today-due)/(1000*60*60*24)); out.push({patient_id:p.patient_id,name:p.name,phone:p.phone,vaccine:nv.vaccine,note:nv.note,due_date:nv.due_date,days,status:due<today?"overdue":(+due===+today?"due_today":"upcoming")}); });
-  out.sort((a,b)=>b.days-a.days); return out;
-}
+  out.sort((a,b)=>b.days-a.days); return out; }
 
 /* ============ EDIT / VISIT / IMMUNIZATION MODALS ============ */
 function openEdit(pid){ const p=getP(pid); showModal(`<h2>Edit Patient Details</h2>
