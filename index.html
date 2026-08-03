@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vishwa Hospital — Cloud Synced & Resilient</title>
+    <style>
+:root{--sky:#0EA5E9;--sky-d:#0284C7;--amber:#F59E0B;--ink:#1E293B;--muted:#64748B;--line:#E2E8F0;--bg:#F8FAFC;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;}
+.hwrap{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:12px;}
+.logo{width:42px;height:42px;border-radius:12px;background:var(--sky);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;}
+h1{font-size:22px;font-weight:800;margin:0;}
+.tag{font-size:12px;color:var(--muted);}
+main{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.tabs{display:inline-flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px;margin-bottom:24px;flex-wrap:wrap;}
+.tab{border:none;background:transparent;padding:9px 18px;border-radius:999px;font-weight:700;color:var(--muted);cursor:pointer;font-size:14px;}
+.tab.active{background:var(--sky);color:#fff;}
+.subtabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+.subtab{border:1px solid var(--line);background:#fff;padding:8px 14px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);}
+.subtab.active{background:#E0F2FE;color:var(--sky-d);border-color:#BAE6FD;}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;}
+@media(max-width:760px){.row,.row3,.row4{grid-template-columns:1fr;}}
+label.lbl{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
+.opt{font-weight:500;text-transform:none;letter-spacing:normal;color:#94A3B8;}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:14px;font-family:inherit;background:#fff;color:var(--ink);}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15);}
+textarea{resize:vertical;}
+.field{margin-bottom:0;}
+.btn{border:none;border-radius:999px;padding:10px 20px;font-weight:700;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:8px;}
+.btn-p{background:var(--sky);color:#fff;} .btn-p:hover{background:var(--sky-d);}
+.btn-a{background:var(--amber);color:#1E293B;} .btn-a:hover{filter:brightness(.96);}
+.btn-o{background:#fff;border:1px solid var(--line);color:var(--ink);}
+.btn-o:hover{background:var(--bg);}
+.btn-g{background:transparent;color:var(--muted);padding:8px 12px;}
+.btn-sm{padding:7px 14px;font-size:13px;}
+.mt{margin-top:22px;} .mb{margin-bottom:16px;} .right{display:flex;justify-content:flex-end;gap:10px;}
+h3{font-size:18px;font-weight:800;margin:0 0 4px;}
+.sub{color:var(--muted);font-size:13px;margin:0 0 18px;}
+.divider{border-top:1px solid var(--line);margin:22px 0;}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;}
+.p-fresh{background:#D1FAE5;color:#047857;} .p-followup{background:#FEF3C7;color:#B45309;} .p-subsequent{background:#E0F2FE;color:#0369A1;}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}
+.badge{background:#F1F5F9;color:#334155;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;background:var(--sky);color:#fff;padding:9px 8px;position:sticky;top:0;}
+td{padding:8px;border-bottom:1px solid var(--line);}
+tr:nth-child(even) td{background:var(--bg);}
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:20px 0;}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:520px){.metrics{grid-template-columns:repeat(2,1fr);}}
+.metric{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;}
+.metric .m-l{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
+.metric .m-v{font-size:32px;font-weight:800;margin-top:6px;}
+.qcard{border:1px solid var(--line);border-radius:12px;background:#fff;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;}
+.token{width:44px;height:44px;border-radius:10px;background:var(--sky);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.token .t1{font-size:9px;opacity:.8;text-transform:uppercase;} .token .t2{font-size:17px;font-weight:800;}
+.tick{width:44px;height:44px;border-radius:10px;background:#D1FAE5;color:#059669;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:24px 12px;overflow:auto;}
+.overlay.show{display:flex;}
+.modal{background:#fff;border-radius:16px;max-width:840px;width:100%;padding:24px;max-height:92vh;overflow:auto;}
+.modal.wide{max-width:1000px;}
+.modal h2{font-size:19px;margin:0 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.empty{border:1px dashed var(--line);border-radius:12px;background:#fff;padding:48px;text-align:center;color:#94A3B8;}
+.nutshell{border:1px solid #FDE68A;background:#FFFBEB;border-radius:12px;padding:14px;margin-bottom:16px;}
+.nutshell .nt-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#B45309;margin-bottom:8px;}
+.nrec{border:1px solid #FDE68A;background:#fff;border-radius:8px;padding:9px 11px;font-size:13px;margin-bottom:8px;}
+.info{display:flex;flex-wrap:wrap;gap:10px 30px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0 16px;}
+.info div span{display:block;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--sky-d);}
+.exrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:640px){.exrow{grid-template-columns:1fr;}}
+.exbox{border:1px solid var(--line);border-radius:10px;padding:12px;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1E293B;color:#fff;padding:11px 20px;border-radius:10px;font-size:14px;z-index:99;opacity:0;transition:opacity .2s;pointer-events:none;}
+.toast.show{opacity:1;}
+.chart{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:14px;}
+.chart .ct{font-size:13px;font-weight:700;margin-bottom:4px;}
+.legend{font-size:11px;color:var(--muted);margin-top:4px;}
+.vtable td,.vtable th{padding:6px 8px;font-size:12px;}
+.overdue{color:var(--amber);font-weight:700;}
+.tiny{font-size:12px;color:var(--muted);}
+.flexb{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+</style>
+  </head>
+  <body>
+    <header>
+      <div class="hwrap">
+        <div class="brand">
+          <div class="logo">🏥</div>
+          <div>
+            <h1>Vishwa Hospital</h1>
+            <div class="tag">Patient Management — Cloud Synced</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-o btn-sm" onclick="syncFromFirestore(true)">🔄 Sync Cloud</button>
+          <button class="btn btn-o btn-sm" onclick="backupData()">⬇ Backup</button>
+          <button class="btn btn-o btn-sm" onclick="document.getElementById('restoreFile').click()">⬆ Restore</button>
+          <input type="file" id="restoreFile" accept="application/json" style="display:none" onchange="restoreData(this)" />
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="tabs">
+        <button class="tab active" data-tab="staff" onclick="setTab('staff')">📋 Staff Module</button>
+        <button class="tab" data-tab="doctor" onclick="setTab('doctor')">🩺 Doctor Module</button>
+        <button class="tab" data-tab="reports" onclick="setTab('reports')">📊 Reports</button>
+      </div>
+      <div id="view">
+      </div>
+    </main>
+    <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal" id="modal">
+      </div>
+    </div>
+    <div class="toast" id="toast">
+    </div>
+    <!-- FIREBASE MODULE SETUP -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import { 
+        getFirestore, 
+        collection, 
+        getDocs, 
+        doc, 
+        setDoc 
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDAKUuLSb6SICVPWsFUpu4LSW_LkPoB9Wc",
+        authDomain: "vishwa-hospital-e03c6.firebaseapp.com",
+        projectId: "vishwa-hospital-e03c6",
+        storageBucket: "vishwa-hospital-e03c6.firebasestorage.app",
+        messagingSenderId: "315364075858",
+        appId: "1:315364075858:web:b3af66cf48f792abbb728b"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      window.db = db;
+      window.fs = { collection, getDocs, doc, setDoc };
+
+      if (typeof window.syncFromFirestore === "function") {
+        window.syncFromFirestore();
+      }
+    </script>
+    <!-- MAIN APP LOGIC -->
+    <script>
+/* ============ RESILIENT STORAGE & FIREBASE SYNC ============ */
+const LS_P="vishwa_patients", LS_C="vishwa_counter";
+const memoryStorage = {};
+
+function safeGetItem(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    console.warn("localStorage blocked, falling back to memory storage.");
+    return memoryStorage[key] || null;
+  }
+}
+
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn("localStorage blocked, saving to memory storage.");
+    memoryStorage[key] = value;
+  }
+}
+
+function loadPatients(){ 
+  try{ return JSON.parse(safeGetItem(LS_P)) || [] }catch(e){ return [] } 
+}
+
+function savePatients(p){ 
+  safeSetItem(LS_P, JSON.stringify(p)); 
+
+  if (window.db && window.fs) {
+    p.forEach(patient => {
+      window.fs.setDoc(window.fs.doc(window.db, "patients", patient.patient_id), patient, { merge: true })
+        .catch(err => console.error("Firestore sync error:", err));
+    });
+  }
+}
+
+async function syncFromFirestore(notify = false) {
+  if (!window.db || !window.fs) return;
+  try {
+    const querySnapshot = await window.fs.getDocs(window.fs.collection(window.db, "patients"));
+    const remotePatients = [];
+    querySnapshot.forEach((doc) => {
+      remotePatients.push(doc.data());
+    });
+    if (remotePatients.length > 0) {
+      safeSetItem(LS_P, JSON.stringify(remotePatients));
+      render();
+      if (notify) toast("Synced with Cloud Firestore");
+    }
+  } catch (err) {
+    console.error("Error pulling from Firestore:", err);
+    if (notify) toast("Cloud sync failed (check internet)");
+  }
+}
+
+function nextId(){
+  const yy=new Date().toLocaleDateString("en-CA").slice(2,4).replace("-","");
+  const y=String(new Date().getFullYear()).slice(2);
+  let c={}; try{c=JSON.parse(safeGetItem(LS_C))||{}}catch(e){}
+  c[y]=(c[y]||0)+1; safeSetItem(LS_C,JSON.stringify(c));
+  return String(c[y]).padStart(4,"0")+"/"+y;
+}
+function uid(){ return "v"+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function todayISO(){ return new Date().toLocaleDateString("en-CA"); }
+
+/* ============ AGE CALCULATIONS ============ */
+function parseD(s){ if(!s) return null; const p=String(s).slice(0,10).split("-"); if(p.length<3) return null; const d=new Date(+p[0],+p[1]-1,+p[2]); return isNaN(d)?null:d; }
+function fmtDate(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function ageFromDob(dob){ const b=parseD(dob); if(!b) return null; const n=new Date(); let m=(n.getFullYear()-b.getFullYear())*12+(n.getMonth()-b.getMonth()); if(n.getDate()<b.getDate())m--; if(m<0)m=0; return {years:Math.floor(m/12),months:m%12}; }
+function formatAge(y,m){ y=(y===""||y==null)?null:+y; m=(m===""||m==null)?null:+m; const p=[]; if(y!=null&&y>0)p.push(y+" yrs"); if(m!=null&&m>0)p.push(m+" months"); if(!p.length&&y===0)return "0 yrs"; return p.join(" "); }
+function parseAge(s){ s=String(s||""); const y=/(\d+)\s*yr/i.exec(s), m=/(\d+)\s*mon/i.exec(s); return {years:y?y[1]:"",months:m?m[1]:""}; }
+function elapsedMonths(from){ const f=parseD(from); if(!f)return 0; const n=new Date(); let m=(n.getFullYear()-f.getFullYear())*12+(n.getMonth()-f.getMonth()); if(n.getDate()<f.getDate())m--; return Math.max(m,0); }
+function displayAge(p){ if(!p)return ""; if(p.dob){const a=ageFromDob(p.dob); if(a)return formatAge(a.years,a.months);} if(p.age_recorded_at&&p.age){const b=parseAge(p.age); const t=(+b.years||0)*12+(+b.months||0)+elapsedMonths(p.age_recorded_at); return formatAge(Math.floor(t/12),t%12);} return p.age||""; }
+
+/* ============ IMMUNIZATION SCHEDULE ============ */
+const SCHEDULE=[
+["Birth","BCG","day",0],["Birth","Hepatitis B-1 (BD)","day",0],["Birth","OPV 0","day",0],
+["6th Week","DTwP/DTaP-1","week",6],["6th Week","IPV-1","week",6],["6th Week","Hib-1","week",6],["6th Week","Hep B-2","week",6],["6th Week","Rotavirus-1","week",6],["6th Week","PCV-1","week",6],
+["10th Week","DTwP/DTaP-2","week",10],["10th Week","IPV-2","week",10],["10th Week","Hib-2","week",10],["10th Week","Hep B-3","week",10],["10th Week","Rotavirus-2","week",10],["10th Week","PCV-2","week",10],
+["14th Week","DTwP/DTaP-3","week",14],["14th Week","IPV-3","week",14],["14th Week","Hib-3","week",14],["14th Week","Hep B-4","week",14],["14th Week","Rotavirus-3","week",14],["14th Week","PCV-3","week",14],
+["6th Month","Influenza (IIV)-1","month",6],
+["7th Month","Influenza (IIV)-2","month",7],
+["6-9 Month","Typhoid Conjugate Vaccine","month",9],
+["9th Month","MMR-1","month",9],
+["12th Month","Hepatitis A","month",12],["12th Month","JE-1","month",12],
+["13th Month","JE-2","month",13],
+["15th Month","MMR-2","month",15],["15th Month","Varicella-1","month",15],["15th Month","PCV Booster","month",15],
+["16-18th Month","DTwP/DTaP-B1","month",16],["16-18th Month","Hib-B1","month",16],["16-18th Month","IPV-B1","month",16],
+["18-19th Month","Hep A-2","month",18],["18-19th Month","Varicella-2","month",18],
+["4-6 Years","DTwP/DTaP-B2","year",4],["4-6 Years","IPV-B2","year",4],["4-6 Years","MMR-3","year",4],
+["10-12 Years","Tdap","year",10],["10-12 Years","HPV","year",10],
+["Annual Flu Vaccine","Annual Flu - 2 Yrs","year",2],["Annual Flu Vaccine","Annual Flu - 3 Yrs","year",3],["Annual Flu Vaccine","Annual Flu - 4 Yrs","year",4],["Annual Flu Vaccine","Annual Flu - 5 Yrs","year",5],
+];
+function addOffset(d,unit,value){ const nd=new Date(d.getTime()); if(unit==="day"){nd.setDate(nd.getDate()+value);return nd;} if(unit==="week"){nd.setDate(nd.getDate()+value*7);return nd;} let months=unit==="year"?value*12:value; const day=nd.getDate(); nd.setDate(1); nd.setMonth(nd.getMonth()+months); const last=new Date(nd.getFullYear(),nd.getMonth()+1,0).getDate(); nd.setDate(Math.min(day,last)); return nd; }
+function generateSchedule(dob,existing){ const b=parseD(dob); if(!b)return []; const prev={}; (existing||[]).forEach(r=>prev[r.vaccine]=r); return SCHEDULE.map(([label,vac,unit,val])=>{ const old=prev[vac]||{}; return {age_label:label,vaccine:vac,due_date:fmtDate(addOffset(b,unit,val)),given_date:old.given_date||"",batch_no:old.batch_no||"",remarks:old.remarks||""}; }); }
+function reflowSchedule(rows,dob){ if(!dob)return; const pristine=generateSchedule(dob); const orig={}; pristine.forEach(r=>orig[r.vaccine]=r.due_date); const groups=[]; rows.forEach(r=>{ if(groups.length&&groups[groups.length-1].label===r.age_label)groups[groups.length-1].members.push(r); else groups.push({label:r.age_label,members:[r]}); }); let prevEff=null; groups.forEach(g=>{ let gd=parseD(orig[g.members[0].vaccine])||parseD(g.members[0].due_date); const given=g.members.map(m=>parseD(m.given_date)).filter(Boolean); if(given.length){ gd=new Date(Math.max(...given.map(d=>d.getTime()))); } else if(prevEff){ const mn=addOffset(prevEff,"month",1); if(!gd||mn>gd)gd=mn; } if(gd){ g.members.forEach(m=>{ if(!m.given_date)m.due_date=fmtDate(gd); }); } const eff=[gd,...given].filter(Boolean); if(eff.length)prevEff=new Date(Math.max(...eff.map(d=>d.getTime()))); }); }
+function buildSchedule(dob,existing){ const rows=generateSchedule(dob,existing); reflowSchedule(rows,dob); return rows; }
+
+/* ============ WHO GROWTH DATA & CHARTS ============ */
+const WHO_AGES=[0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,30,36,42,48,54,60];
+const WHO={weight:{boys:{P3:[2.5,3.4,4.4,5.1,5.6,6.1,6.4,6.7,6.9,7.1,7.4,7.6,7.7,8.3,8.8,9.2,9.7,10.5,11.3,12.0,12.7,13.4,14.1],P50:[3.3,4.5,5.6,6.4,7.0,7.5,7.9,8.3,8.6,8.9,9.2,9.4,9.6,10.3,10.9,11.5,12.2,13.3,14.3,15.3,16.3,17.3,18.3],P97:[4.4,5.8,7.1,8.0,8.7,9.3,9.8,10.3,10.7,11.0,11.4,11.7,12.0,12.8,13.7,14.5,15.3,16.9,18.3,19.7,21.2,22.7,24.2]},girls:{P3:[2.4,3.2,3.9,4.5,5.0,5.4,5.7,6.0,6.3,6.5,6.7,6.9,7.0,7.6,8.1,8.6,9.0,9.9,10.8,11.6,12.3,13.0,13.7],P50:[3.2,4.2,5.1,5.8,6.4,6.9,7.3,7.6,7.9,8.2,8.5,8.7,8.9,9.6,10.2,10.9,11.5,12.7,13.9,15.0,16.1,17.2,18.2],P97:[4.2,5.5,6.6,7.5,8.2,8.8,9.3,9.8,10.2,10.5,10.9,11.2,11.5,12.4,13.2,14.0,14.8,16.5,18.1,19.8,21.5,23.2,24.9]}},height:{boys:{P3:[46.1,50.8,54.4,57.3,59.7,61.7,63.3,64.8,66.2,67.5,68.7,69.9,71.0,74.1,76.9,79.4,81.7,85.5,88.7,91.9,94.9,97.8,100.7],P50:[49.9,54.7,58.4,61.4,63.9,65.9,67.6,69.2,70.6,72.0,73.3,74.5,75.7,79.1,82.3,85.1,87.8,91.9,96.1,99.9,103.3,106.7,110.0],P97:[53.7,58.6,62.4,65.5,68.0,70.1,71.9,73.5,75.0,76.5,77.9,79.2,80.5,84.2,87.7,90.9,93.9,98.3,103.5,107.8,111.7,115.6,119.2]},girls:{P3:[45.4,49.8,53.0,55.6,57.8,59.6,61.2,62.7,64.0,65.3,66.5,67.7,68.9,72.0,74.9,77.5,80.0,84.0,87.4,90.9,94.1,97.1,99.9],P50:[49.1,53.7,57.1,59.8,62.1,64.0,65.7,67.3,68.7,70.1,71.5,72.8,74.0,77.5,80.7,83.6,86.4,90.7,95.1,99.0,102.7,106.2,109.4],P97:[52.9,57.6,61.1,64.0,66.4,68.5,70.3,71.9,73.5,75.0,76.4,77.8,79.2,83.0,86.5,89.8,92.9,97.7,102.7,107.2,111.3,115.2,118.9]}},headcirc:{boys:{P3:[32.1,35.1,36.9,38.3,39.4,40.3,41.0,41.7,42.2,42.6,43.0,43.4,43.6,44.3,44.9,45.3,45.7,46.3,46.8,47.2,47.5,47.8,48.0],P50:[34.5,37.3,39.1,40.5,41.6,42.6,43.3,44.0,44.5,45.0,45.4,45.8,46.1,46.8,47.4,47.8,48.3,48.9,49.5,49.8,50.2,50.4,50.7],P97:[36.9,39.5,41.3,42.7,43.8,44.8,45.6,46.3,46.9,47.4,47.8,48.2,48.5,49.2,49.8,50.3,50.8,51.4,52.0,52.4,52.8,53.1,53.4]},girls:{P3:[31.7,34.3,35.8,37.1,38.1,38.9,39.6,40.2,40.7,41.2,41.5,41.9,42.2,42.9,43.5,44.0,44.4,45.1,45.6,46.0,46.3,46.6,46.9],P50:[33.9,36.5,38.0,39.3,40.3,41.1,41.8,42.4,42.9,43.4,43.8,44.1,44.4,45.2,45.8,46.3,46.8,47.5,48.0,48.4,48.8,49.1,49.3],P97:[36.1,38.7,40.2,41.5,42.5,43.3,44.0,44.6,45.1,45.6,46.0,46.4,46.7,47.5,48.1,48.6,49.1,49.8,50.4,50.8,51.2,51.5,51.8]}}};
+const WFH_HEIGHTS=[45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120];
+const WHO_WFH={boys:{P3:[2.0,2.8,3.8,4.9,5.9,6.8,7.5,8.2,8.9,9.6,10.4,11.2,12.1,13.1,14.2,15.4],P50:[2.4,3.4,4.5,5.8,7.0,8.0,8.9,9.7,10.6,11.5,12.5,13.5,14.7,16.0,17.4,19.0],P97:[3.0,4.2,5.5,6.9,8.3,9.4,10.5,11.5,12.6,13.7,14.9,16.2,17.7,19.4,21.4,23.7]},girls:{P3:[2.1,2.8,3.6,4.6,5.5,6.3,7.0,7.8,8.6,9.4,10.2,11.0,11.9,12.9,14.0,15.3],P50:[2.5,3.4,4.3,5.4,6.5,7.4,8.3,9.2,10.2,11.1,12.1,13.1,14.3,15.6,17.1,18.8],P97:[3.1,4.2,5.3,6.6,7.9,9.0,10.1,11.3,12.5,13.7,15.0,16.4,18.0,19.8,21.8,24.1]}};
+function sexKey(s){ return s==="Male"?"boys":s==="Female"?"girls":null; }
+function num(s){ if(!s)return null; const m=parseFloat(String(s).replace(/[^0-9.]/g,"")); return isNaN(m)?null:m; }
+function ageMonths(dob,ds){ const a=parseD(dob),b=parseD(ds); if(!a||!b)return null; return Math.max(0,Math.round(((b-a)/(1000*60*60*24*30.4375))*10)/10); }
+function interp(xs,ys,x){ if(x<=xs[0])return ys[0]; if(x>=xs[xs.length-1])return ys[ys.length-1]; for(let i=1;i<xs.length;i++){ if(x<=xs[i]){ const t=(x-xs[i-1])/(xs[i]-xs[i-1]); return Math.round((ys[i-1]+t*(ys[i]-ys[i-1]))*10)/10; } } return ys[ys.length-1]; }
+
+function svgChart(title,unit,xLabel,color,xs,bands,child){
+  const W=560,H=240,pad=44;
+  const allY=[...bands.P3,...bands.P50,...bands.P97,...child.map(c=>c.y)];
+  const allX=[...xs,...child.map(c=>c.x)];
+  const xmin=Math.min(...allX),xmax=Math.max(...allX);
+  const ymin=Math.min(...allY)*0.9,ymax=Math.max(...allY)*1.05;
+  const mx=x=>pad+(xmax===xmin?0:(x-xmin)/(xmax-xmin))*(W-pad-10);
+  const my=y=>H-pad-(ymax===ymin?0:(y-ymin)/(ymax-ymin))*(H-pad-14);
+  const path=(ys,dash,col)=>{ let d=""; xs.forEach((x,i)=>{ d+=(i?"L":"M")+mx(x).toFixed(1)+" "+my(ys[i]).toFixed(1)+" "; }); return `<path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" ${dash?'stroke-dasharray="4 3"':''}/>`; };
+  let ticks="";
+  for(let i=0;i<=4;i++){ const yy=pad+i*(H-pad-14)/4; const v=(ymax-(ymax-ymin)*i/4).toFixed(0); ticks+=`<line x1="${pad}" y1="${yy}" x2="${W-10}" y2="${yy}" stroke="#EEF2F7"/><text x="${pad-6}" y="${yy+3}" text-anchor="end" font-size="9" fill="#94A3B8">${v}</text>`; }
+  const childLine=child.length? `<polyline points="${child.map(c=>mx(c.x).toFixed(1)+","+my(c.y).toFixed(1)).join(" ")}" fill="none" stroke="${color}" stroke-width="2.6"/>`+child.map(c=>`<circle cx="${mx(c.x).toFixed(1)}" cy="${my(c.y).toFixed(1)}" r="3.6" fill="${color}"/>`).join("") : "";
+  return `<div class="chart"><div class="ct">${title}</div>
+    <svg viewBox="0 0 ${W} ${H}" width="100%" height="220" preserveAspectRatio="xMidYMid meet">
+    ${ticks}
+    ${path(bands.P97,true,"#CBD5E1")}${path(bands.P50,false,"#94A3B8")}${path(bands.P3,true,"#CBD5E1")}
+    ${childLine}
+    <text x="${W/2}" y="${H-4}" text-anchor="middle" font-size="10" fill="#64748B">${xLabel}</text>
+    <text x="12" y="14" font-size="10" fill="#64748B">${unit}</text>
+    </svg>
+    <div class="legend">— WHO P50 &nbsp; ┄ P3/P97 &nbsp; <b style="color:${color}">● This child</b></div></div>`;
+}
+function growthHTML(p){
+  const visits=p.visits||[], dob=p.dob, sk=sexKey(p.sex);
+  if(dob&&sk){
+    const collect=(field)=>{ const pts=[]; visits.forEach(v=>{const a=ageMonths(dob,v.date_of_visit),val=num(v[field]); if(a!=null&&val!=null)pts.push({x:a,y:val});}); return pts.sort((a,b)=>a.x-b.x); };
+    const w=collect("wt"),h=collect("ht"),hc=collect("hc");
+    const wfh=[]; visits.forEach(v=>{const ht=num(v.ht),wt=num(v.wt); if(ht!=null&&wt!=null&&ht>=45&&ht<=120)wfh.push({x:ht,y:wt});}); wfh.sort((a,b)=>a.x-b.x);
+    if(!w.length&&!h.length&&!hc.length&&!wfh.length) return `<div class="empty">No Ht/Wt recorded yet. Add measurements in visits to see WHO percentile charts.</div>`;
+    const maxA=Math.max(12,...[...w,...h,...hc].map(p=>p.x));
+    const xs=WHO_AGES.filter(a=>a<=maxA+0.01);
+    const band=(measure)=>({P3:xs.map(a=>interp(WHO_AGES,WHO[measure][sk].P3,a)),P50:xs.map(a=>interp(WHO_AGES,WHO[measure][sk].P50,a)),P97:xs.map(a=>interp(WHO_AGES,WHO[measure][sk].P97,a))});
+    let out=`<p class="tiny">Plotted against WHO standards (${sk}).</p>`;
+    out+=svgChart("Weight-for-age","kg","Age (months)","#10B981",xs,band("weight"),w);
+    out+=svgChart("Height/Length-for-age","cm","Age (months)","#0EA5E9",xs,band("height"),h);
+    if(hc.length)out+=svgChart("Head circumference-for-age","cm","Age (months)","#F59E0B",xs,band("headcirc"),hc);
+    if(wfh.length){ const wb={P3:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P3,x)),P50:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P50,x)),P97:WFH_HEIGHTS.map(x=>interp(WFH_HEIGHTS,WHO_WFH[sk].P97,x))}; out+=svgChart("Weight-for-height","kg","Height (cm)","#8B5CF6",WFH_HEIGHTS,wb,wfh); }
+    return out;
+  }
+  const data=visits.map(v=>({d:(v.date_of_visit||"").slice(5),h:num(v.ht),w:num(v.wt)})).filter(x=>x.h!=null||x.w!=null);
+  if(!data.length)return `<div class="empty">No Ht/Wt recorded yet.</div>`;
+  return `<p class="tiny">${dob?"":"Add Date of Birth & Sex to overlay WHO percentile bands."}</p>`+
+    `<table class="vtable"><tr><th>Date</th><th>Height</th><th>Weight</th></tr>`+data.map(d=>`<tr><td>${d.d}</td><td>${d.h??"-"}</td><td>${d.w??"-"}</td></tr>`).join("")+`</table>`;
+}
+
+/* ============ STATE / UTIL ============ */
+let TAB="staff", STAFF_SUB="register", selPid=null, treatCtx=null;
+const EXAM=[["respiratory","Respiratory System"],["cvs","CVS System"],["abdominal","Abdominal System"],["opthal_ent","Opthal / ENT"],["cns","CNS System"],["others","Others"]];
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1800); }
+function emptyVisit(){ return {id:uid(),date_of_visit:todayISO(),visit_type:"fresh",patient_category:"new",status:"waiting",ht:"",wt:"",hc:"",bp:"",vaccination:[],complaints:"",examination:{respiratory:"",cvs:"",abdominal:"",opthal_ent:"",cns:"",others:""},treatment:"",created_at:new Date().toISOString()}; }
+function getP(pid){ return loadPatients().find(p=>p.patient_id===pid); }
+function updateP(pid,fn){ const arr=loadPatients(); const i=arr.findIndex(p=>p.patient_id===pid); if(i<0)return; fn(arr[i]); savePatients(arr); }
+
+/* ============ TABS NAVIGATION ============ */
+function setTab(t){ TAB=t; document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t)); render(); }
+function render(){ const v=document.getElementById("view"); if(TAB==="staff")v.innerHTML=staffView(); else if(TAB==="doctor")v.innerHTML=doctorView(); else v.innerHTML=reportsView(); afterRender(); }
+
+/* ============ AGE FORM FIELD ============ */
+function ageFieldHTML(prefix,dob,age){
+  if(dob){ return `<input id="${prefix}_auto" readonly value="${esc(displayAge({dob,age}))}" style="background:var(--bg)" placeholder="Auto from DOB"/>`; }
+  const a=parseAge(age);
+  return `<div style="display:flex;gap:8px"><input id="${prefix}_y" type="number" min="0" value="${a.years}" placeholder="Years" oninput="syncAge('${prefix}')"/><input id="${prefix}_m" type="number" min="0" max="11" value="${a.months}" placeholder="Months (opt)" oninput="syncAge('${prefix}')"/></div>`;
+}
+function readAge(prefix,dob){ if(dob){const a=ageFromDob(dob); return {age:formatAge(a.years,a.months),recorded:""};} const y=document.getElementById(prefix+"_y"),m=document.getElementById(prefix+"_m"); return {age:formatAge(y?y.value:"",m?m.value:""),recorded:todayISO()}; }
+function syncAge(){}
+
+/* ============ STAFF MODULE ============ */
+function staffView(){
+  const subs=[["register","New Registration"],["existing","Existing Patient"],["alerts","Vaccine Alerts"]];
+  let body="";
+  if(STAFF_SUB==="register")body=registerForm();
+  else if(STAFF_SUB==="existing")body=existingView();
+  else body=alertsView();
+  return `<div class="subtabs">${subs.map(s=>`<button class="subtab ${STAFF_SUB===s[0]?'active':''}" onclick="STAFF_SUB='${s[0]}';render()">${s[1]}</button>`).join("")}</div>${body}`;
+}
+function registerForm(){
+  return `<div class="card">
+    <h3>Patient Details</h3><p class="sub">A new Patient ID will be generated automatically.</p>
+    <div class="row">
+      <div class="field"><label class="lbl">Name</label><input id="r_name" placeholder="Child's full name"/></div>
+      <div class="row"><div class="field"><label class="lbl">Age</label><div id="r_agebox">${ageFieldHTML("r_age","","")}</div></div>
+      <div class="field"><label class="lbl">Sex</label><select id="r_sex"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div></div>
+      <div class="field"><label class="lbl">Phone <span class="opt">(optional)</span></label><input id="r_phone" placeholder="Mobile number"/></div>
+      <div class="field"><label class="lbl">Date of Birth <span class="opt">(for vaccination calendar)</span></label><input id="r_dob" type="date" max="${todayISO()}" onchange="document.getElementById('r_agebox').innerHTML=ageFieldHTML('r_age',this.value,'')"/></div>
+    </div>
+    <div class="divider"></div>
+    <h3>Visit Information</h3><p class="sub">New registrations are recorded as a <b style="color:#059669">Fresh</b> visit and sent to the doctor's queue.</p>
+    <div class="row">
+      <div class="field"><label class="lbl">Date of Visit</label><input id="r_dov" type="date" value="${todayISO()}"/></div>
+    </div>
+    <div class="row4 mt">
+      <div class="field"><label class="lbl">Height <span class="opt">(opt)</span></label><input id="r_ht" placeholder="e.g. 92 cm"/></div>
+      <div class="field"><label class="lbl">Weight <span class="opt">(opt)</span></label><input id="r_wt" placeholder="e.g. 13 kg"/></div>
+      <div class="field"><label class="lbl">Head Circ. <span class="opt">(&lt;5y)</span></label><input id="r_hc" placeholder="e.g. 42 cm"/></div>
+      <div class="field"><label class="lbl">BP <span class="opt">(opt)</span></label><input id="r_bp" placeholder="e.g. 90/60"/></div>
+    </div>
+    <div class="right mt"><button class="btn btn-p" onclick="doRegister()">💾 Register Patient</button></div>
+  </div>`;
+}
+function doRegister(){
+  const name=val("r_name"),sex=val("r_sex"),dob=val("r_dob");
+  const ag=readAge("r_age",dob);
+  if(!name||!ag.age||!sex){ toast("Name, Age and Sex are required"); return; }
+  const v=emptyVisit(); v.date_of_visit=val("r_dov")||todayISO(); v.ht=val("r_ht");v.wt=val("r_wt");v.hc=val("r_hc");v.bp=val("r_bp");
+  const pid=nextId();
+  const patient={patient_id:pid,name,age:ag.age,sex,phone:val("r_phone"),dob,age_recorded_at:dob?"":todayISO(),visits:[v],vaccinations:dob?buildSchedule(dob):[],next_vaccination:null,created_at:new Date().toISOString()};
+  const arr=loadPatients(); arr.push(patient); savePatients(arr);
+  toast("Registered • ID "+pid+" • Sent to doctor");
+  STAFF_SUB="register"; render();
+}
+function existingView(){
+  return `<div class="card">
+    <div style="display:flex;gap:12px"><input id="s_q" placeholder="Search by Patient ID (e.g. 0001/26), name or phone" onkeydown="if(event.key==='Enter')doSearch()"/><button class="btn btn-p" onclick="doSearch()">🔍 Search</button></div>
+    <div id="s_results" class="mt"></div>
+    <div id="s_selected" class="mt"></div>
+  </div>`;
+}
+function doSearch(){
+  const q=val("s_q").trim().toLowerCase();
+  const res=loadPatients().filter(p=>!q||p.patient_id.toLowerCase().includes(q)||(p.name||"").toLowerCase().includes(q)||(p.phone||"").toLowerCase().includes(q)).slice(0,50);
+  const el=document.getElementById("s_results");
+  if(!res.length){ el.innerHTML=`<p class="tiny">No patients found.</p>`; return; }
+  el.innerHTML=res.map(p=>`<button class="btn btn-o" style="width:100%;justify-content:space-between;margin-bottom:8px;text-align:left" onclick="selectPatient('${p.patient_id}')"><span><b>${esc(p.name)}</b> <span class="tiny">${esc(displayAge(p))} • ${esc(p.sex)} ${p.phone?"• "+esc(p.phone):""}</span></span><span class="badge mono">${p.patient_id}</span></button>`).join("");
+}
+function selectPatient(pid){ selPid=pid; document.getElementById("s_selected").innerHTML=selectedCard(getP(pid)); }
+function selectedCard(p){
+  if(!p)return "";
+  return `<div class="card" style="background:#F0F9FF;border-color:#BAE6FD">
+    <div class="flexb"><div><span style="font-size:17px;font-weight:800">${esc(p.name)}</span> <span class="badge mono">${p.patient_id}</span><div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)} ${p.phone?"• "+esc(p.phone):""}</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-o btn-sm" onclick="openEdit('${p.patient_id}')">✏️ Edit</button>
+      <button class="btn btn-o btn-sm" onclick="openImmun('${p.patient_id}')">💉 Immunization</button>
+      <button class="btn btn-p btn-sm" onclick="openNewVisit('${p.patient_id}')">➕ New Visit</button>
+    </div></div>
+    <div class="mt"><div class="lbl">Visit History</div>
+    ${(p.visits||[]).slice().reverse().map(v=>`<div class="qcard" style="padding:9px 12px"><span class="tiny mono">${v.date_of_visit}</span> <span class="pill p-${v.visit_type}">${v.visit_type}</span> <span class="tiny">${v.patient_category==="new"?"New":"Old"} • ${v.status}</span></div>`).join("")||'<p class="tiny">No visits.</p>'}</div>
+  </div>`;
+}
+function alertsView(){
+  const rows=computeOverdue();
+  return `<div class="card">
+    <div class="flexb mb"><h3>⚠️ Vaccination Due / Overdue <span class="badge">${rows.length}</span></h3></div>
+    <p class="sub">Doctor-set next-vaccination dates that are overdue, due today, or due within the next 7 days.</p>
+    ${rows.length?`<table><tr><th>Patient</th><th>Phone</th><th>Vaccine</th><th>Due</th><th>Status</th><th>Reminder</th></tr>${rows.map(r=>`<tr><td><b>${esc(r.name)}</b><div class="tiny mono">${r.patient_id}</div></td><td>${esc(r.phone||"—")}</td><td>${esc(r.vaccine||"Next dose")}</td><td class="mono tiny">${r.due_date}</td><td>${statusBadge(r)}</td><td>${r.phone?`<a class="btn btn-o btn-sm" target="_blank" href="https://wa.me/${encodeURIComponent(r.phone)}?text=${encodeURIComponent('Reminder from Vishwa Hospital: '+r.name+"'s vaccination ("+(r.vaccine||'next dose')+') is due on '+r.due_date+'.')}">WhatsApp</a>`:""}</td></tr>`).join("")}</table>`:'<div class="empty">💉 No vaccinations due. Doctors set next-due dates from the Doctor module.</div>'}
+  </div>`;
+}
+function statusBadge(r){ if(r.status==="overdue")return `<span class="pill" style="background:#FEE2E2;color:#B91C1C">${r.days} days overdue</span>`; if(r.status==="due_today")return `<span class="pill p-followup">Due today</span>`; return `<span class="pill p-subsequent">Due in ${-r.days} days</span>`; }
+function computeOverdue(){
+  const today=parseD(todayISO()), horizon=addOffset(today,"day",7); const out=[];
+  loadPatients().forEach(p=>{ const nv=p.next_vaccination; if(!nv||!nv.due_date)return; const due=parseD(nv.due_date); if(!due||due>horizon)return; const days=Math.round((today-due)/(1000*60*60*24)); out.push({patient_id:p.patient_id,name:p.name,phone:p.phone,vaccine:nv.vaccine,note:nv.note,due_date:nv.due_date,days,status:due<today?"overdue":(+due===+today?"due_today":"upcoming")}); });
+  out.sort((a,b)=>b.days-a.days); return out;
+}
+
+/* ============ EDIT / VISIT / IMMUNIZATION MODALS ============ */
+function openEdit(pid){ const p=getP(pid); showModal(`<h2>Edit Patient Details</h2>
+  <div class="field mb"><label class="lbl">Name</label><input id="e_name" value="${esc(p.name)}"/></div>
+  <div class="row">
+    <div class="field"><label class="lbl">Age</label><div id="e_agebox">${ageFieldHTML("e_age",p.dob,p.age)}</div></div>
+    <div class="field"><label class="lbl">Sex</label><select id="e_sex">${["Male","Female","Other"].map(s=>`<option ${p.sex===s?"selected":""}>${s}</option>`).join("")}</select></div>
+  </div>
+  <div class="row mt">
+    <div class="field"><label class="lbl">Phone</label><input id="e_phone" value="${esc(p.phone||"")}"/></div>
+    <div class="field"><label class="lbl">Date of Birth</label><input id="e_dob" type="date" max="${todayISO()}" value="${esc(p.dob||"")}" onchange="document.getElementById('e_agebox').innerHTML=ageFieldHTML('e_age',this.value,'')"/></div>
+  </div>
+  <div class="right mt"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveEdit('${pid}')">💾 Save</button></div>`);
+}
+function saveEdit(pid){
+  const dob=val("e_dob"); const ag=readAge("e_age",dob); const p=getP(pid);
+  const dobChanged=dob!==(p.dob||"");
+  updateP(pid,x=>{ x.name=val("e_name"); x.sex=val("e_sex"); x.phone=val("e_phone"); x.age=ag.age; x.age_recorded_at=dob?"":todayISO(); x.dob=dob; if(dobChanged&&dob){ x.vaccinations=buildSchedule(dob,x.vaccinations); } });
+  closeModal(); toast("Patient updated"); if(TAB==="staff")selectPatient(pid);
+}
+function openNewVisit(pid){ const p=getP(pid); const v=emptyVisit(); v.patient_category="old"; window._nv=v; showModal(`<h2>New Visit • ${esc(p.name)} <span class="badge mono">${pid}</span></h2>
+  <p class="sub">Categorise the visit (Fresh / Follow-up / Subsequent), record vitals, then send to the doctor's queue.</p>
+  <div class="row">
+    <div class="field"><label class="lbl">Date of Visit</label><input id="nv_dov" type="date" value="${todayISO()}"/></div>
+    <div class="field"><label class="lbl">Visit Type <span class="opt">(categorise)</span></label><select id="nv_type"><option value="fresh">Fresh</option><option value="followup">Follow-up</option><option value="subsequent">Subsequent</option></select></div>
+  </div>
+  <div class="row4 mt">
+    <div class="field"><label class="lbl">Height</label><input id="nv_ht" placeholder="cm"/></div>
+    <div class="field"><label class="lbl">Weight</label><input id="nv_wt" placeholder="kg"/></div>
+    <div class="field"><label class="lbl">Head Circ.</label><input id="nv_hc" placeholder="cm"/></div>
+    <div class="field"><label class="lbl">BP</label><input id="nv_bp" placeholder="90/60"/></div>
+  </div>
+  <div class="right mt"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveNewVisit('${pid}')">📨 Send to Doctor</button></div>`);
+}
+function saveNewVisit(pid){
+  const v=window._nv; v.date_of_visit=val("nv_dov")||todayISO(); v.visit_type=val("nv_type"); v.ht=val("nv_ht");v.wt=val("nv_wt");v.hc=val("nv_hc");v.bp=val("nv_bp"); v.status="waiting";
+  updateP(pid,x=>x.visits.push(v)); closeModal(); toast("Visit sent to doctor"); selectPatient(pid);
+}
+
+function openImmun(pid){ renderImmun(pid); }
+function renderImmun(pid){
+  const p=getP(pid);
+  if(!p.dob&&(!p.vaccinations||!p.vaccinations.length)){
+    showModal(`<h2>💉 Immunization • ${esc(p.name)}</h2><div class="empty" style="padding:34px">No schedule yet. Set the child's Date of Birth to auto-generate the calendar.<div class="mt" style="display:flex;gap:8px;justify-content:center"><input id="im_dob" type="date" max="${todayISO()}" style="width:auto"/><button class="btn btn-p btn-sm" onclick="genImmun('${pid}')">Generate</button></div></div>`,true);
+    return;
+  }
+  const rows=p.vaccinations||[]; const today=todayISO();
+  const nv=p.next_vaccination||{};
+  let grp=[],cur=null;
+  rows.forEach((r,i)=>{ r._i=i; if(!cur||cur.label!==r.age_label){cur={label:r.age_label,items:[r]};grp.push(cur);} else cur.items.push(r); });
+  const body=`<h2>💉 Immunization • ${esc(p.name)} <span class="badge mono">${pid}</span></h2>
+  <p class="tiny">DOB: ${esc(p.dob||"-")}</p>
+  <div class="nutshell" style="border-color:#BAE6FD;background:#F0F9FF">
+    <div class="nt-h" style="color:#0369A1">Doctor's Next Vaccination Due (drives the staff overdue alert)</div>
+    <div class="row3">
+      <div class="field"><label class="lbl">Vaccine</label><input id="nv_vac" value="${esc(nv.vaccine||"")}" placeholder="e.g. 9th month - MMR"/></div>
+      <div class="field"><label class="lbl">Due Date</label><input id="nv_due" type="date" value="${esc(nv.due_date||"")}"/></div>
+      <div class="field"><label class="lbl">Note</label><input id="nv_note" value="${esc(nv.note||"")}" placeholder="optional"/></div>
+    </div>
+    <div class="right mt"><button class="btn btn-p btn-sm" onclick="saveNextVacc('${pid}')">💾 Save Next Due</button></div>
+  </div>
+  <div style="max-height:52vh;overflow:auto;border:1px solid var(--line);border-radius:10px">
+  <table class="vtable"><tr><th>Age</th><th>Vaccine</th><th>Due</th><th>Given</th><th>Batch</th><th>Remarks</th></tr>
+  ${grp.map(g=>g.items.map((r,gi)=>`<tr>
+    <td>${gi===0?esc(g.label):""}</td>
+    <td>${r.given_date?"✅ ":""}${(!r.given_date&&r.due_date&&r.due_date<today)?'⚠️ ':''}${esc(r.vaccine)}</td>
+    <td class="mono ${(!r.given_date&&r.due_date&&r.due_date<today)?'overdue':'tiny'}">${r.due_date}</td>
+    <td><input type="date" value="${esc(r.given_date||"")}" style="padding:4px 6px" onchange="setVacc('${pid}',${r._i},'given_date',this.value)"/></td>
+    <td><input value="${esc(r.batch_no||"")}" style="padding:4px 6px;width:80px" onchange="setVacc('${pid}',${r._i},'batch_no',this.value)"/></td>
+    <td><input value="${esc(r.remarks||"")}" style="padding:4px 6px;width:110px" onchange="setVacc('${pid}',${r._i},'remarks',this.value)"/></td>
+  </tr>`).join("")).join("")}
+  </table></div>`;
+  showModal(body,true);
+}
+function genImmun(pid){ const dob=val("im_dob"); if(!dob){toast("Select DOB");return;} updateP(pid,x=>{x.dob=dob;x.age_recorded_at="";x.age=formatAge(ageFromDob(dob).years,ageFromDob(dob).months);x.vaccinations=buildSchedule(dob,x.vaccinations);}); renderImmun(pid); toast("Schedule generated"); }
+function setVacc(pid,idx,field,v){ updateP(pid,x=>{ x.vaccinations[idx][field]=v; if(field==="given_date"&&v)reflowSchedule(x.vaccinations,x.dob); }); renderImmun(pid); }
+function saveNextVacc(pid){ const due=val("nv_due"); if(!due){toast("Enter a due date");return;} updateP(pid,x=>x.next_vaccination={vaccine:val("nv_vac"),due_date:due,note:val("nv_note")}); toast("Next due saved"); renderImmun(pid); }
+
+/* ============ DOCTOR MODULE ============ */
+let DOC_UNLOCKED=false, DOC_TAB="waiting", DOC_FILTER="", DOC_TODAY=true;
+function doctorView(){
+  if(!DOC_UNLOCKED) return `<div class="card" style="max-width:420px;margin:30px auto;text-align:center">
+    <div style="font-size:30px">🔒</div><h3>Doctor Module</h3><p class="sub">Enter password to access clinical records.</p>
+    <input id="doc_pw" type="password" placeholder="Password" style="text-align:center" onkeydown="if(event.key==='Enter')unlockDoc()"/>
+    <div class="mt"><button class="btn btn-p" style="width:100%" onclick="unlockDoc()">Unlock</button></div></div>`;
+  const items=queueItems(DOC_TAB);
+  return `<div class="card mb"><div class="flexb"><input id="doc_filter" value="${esc(DOC_FILTER)}" placeholder="Filter by ID, phone or name" style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter'){DOC_FILTER=this.value;render()}"/>
+    <label class="tiny" style="display:flex;gap:6px;align-items:center"><input type="checkbox" ${DOC_TODAY?"checked":""} style="width:auto" onchange="DOC_TODAY=this.checked;render()"/> Today only</label>
+    <button class="btn btn-o btn-sm" onclick="DOC_FILTER=document.getElementById('doc_filter').value;render()">Apply</button></div></div>
+    <div class="subtabs">
+      <button class="subtab ${DOC_TAB==="waiting"?"active":""}" onclick="DOC_TAB='waiting';render()">⏳ Waiting <span class="badge">${queueItems('waiting').length}</span></button>
+      <button class="subtab ${DOC_TAB==="treated"?"active":""}" onclick="DOC_TAB='treated';render()">✅ Treated <span class="badge">${queueItems('treated').length}</span></button>
+    </div>
+    ${items.length?items.map((it,i)=>qcard(it,i+1,DOC_TAB==="treated")).join(""):`<div class="empty">${DOC_TAB==="waiting"?"No patients waiting. Newly registered patients appear here.":"No treated patients."}</div>`}`;
+}
+function unlockDoc(){ if(val("doc_pw")==="123456"){DOC_UNLOCKED=true;render();}else toast("Incorrect password"); }
+function queueItems(status){
+  const f=DOC_FILTER.trim().toLowerCase(), today=todayISO(); const out=[];
+  loadPatients().forEach(p=>{ if(f&&!(p.patient_id.toLowerCase().includes(f)||(p.name||"").toLowerCase().includes(f)||(p.phone||"").toLowerCase().includes(f)))return;
+    (p.visits||[]).forEach(v=>{ if((v.status||"waiting")!==status)return; if(DOC_TODAY&&(v.date_of_visit||"").slice(0,10)!==today)return; out.push({p,v}); }); });
+  return out;
+}
+function qcard(it,token,treated){
+  const p=it.p,v=it.v;
+  return `<div class="qcard">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0">
+      ${treated?'<div class="tick">✓</div>':`<div class="token"><span class="t1">Token</span><span class="t2">${token}</span></div>`}
+      <div><div><b>${esc(p.name)}</b> <span class="badge mono">${p.patient_id}</span> <span class="pill p-${v.visit_type}">${v.visit_type}</span></div>
+      <div class="tiny">${esc(displayAge(p))} • ${esc(p.sex)} ${p.phone?"• "+esc(p.phone):""} • <span class="mono">${v.date_of_visit}</span></div></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn btn-g btn-sm" title="Vaccination" onclick="openImmun('${p.patient_id}')">💉</button>
+      <button class="btn btn-g btn-sm" title="Growth" onclick="openGrowth('${p.patient_id}')">📈</button>
+      <button class="btn btn-g btn-sm" title="Print history" onclick="printHistory('${p.patient_id}')">🖨️</button>
+      ${treated?`<button class="btn btn-g btn-sm" title="Back to waiting" onclick="revertVisit('${p.patient_id}','${v.id}')">↩️</button>`:""}
+      <button class="btn btn-p btn-sm" onclick="openTreat('${p.patient_id}','${v.id}')">🩺 ${treated?"View / Edit":"Attend"}</button>
+    </div></div>`;
+}
+function revertVisit(pid,vid){ updateP(pid,x=>{const v=x.visits.find(v=>v.id===vid);if(v)v.status="waiting";}); toast("Moved to waiting"); render(); }
+function openGrowth(pid){ const p=getP(pid); showModal(`<h2>📈 Growth Tracking • ${esc(p.name)} <span class="badge mono">${pid}</span></h2>${growthHTML(p)}<div class="right mt"><button class="btn btn-o" onclick="closeModal()">Close</button><button class="btn btn-p" onclick="printHistory('${pid}')">🖨️ Print History</button></div>`,true); }
+function openTreat(pid,vid){
+  const p=getP(pid); const v=p.visits.find(v=>v.id===vid); treatCtx={pid,vid};
+  const past=(p.visits||[]).filter(x=>x.id!==vid&&x.status==="treated").sort((a,b)=>(b.date_of_visit||"").localeCompare(a.date_of_visit||""));
+  const nutshell=past.length?`<div class="nutshell"><div class="nt-h">Previous Treatment Records (${past.length})</div>${past.map(x=>{const ex=x.examination||{};const pos=EXAM.filter(([k])=>(ex[k]||"").trim()).map(([k,l])=>l+": "+ex[k]);return `<div class="nrec"><span class="tiny mono">${x.date_of_visit}</span> <span class="pill p-${x.visit_type}">${x.visit_type}</span>${x.complaints?`<div><b>Complaints:</b> ${esc(x.complaints)}</div>`:""}${pos.length?`<div><b>Findings:</b> ${esc(pos.join(" | "))}</div>`:""}${x.treatment?`<div><b>Treatment:</b> ${esc(x.treatment)}</div>`:""}</div>`;}).join("")}</div>`:"";
+  showModal(`<h2>🩺 ${esc(p.name)} • ${pid} <span class="tiny">(${v.date_of_visit})</span></h2>
+  ${nutshell}
+  <div class="field mb"><label class="lbl">Complaints</label><textarea id="t_comp" rows="3">${esc(v.complaints||"")}</textarea></div>
+  <div class="lbl mb">Examination <span class="opt">(optional)</span></div>
+  <div class="exrow">${EXAM.map(([k,l])=>`<div class="exbox"><label class="lbl" style="letter-spacing:normal">${l}</label><textarea id="t_${k}" rows="2">${esc(v.examination&&v.examination[k]||"")}</textarea></div>`).join("")}</div>
+  <div class="field mt"><label class="lbl">Treatment</label><textarea id="t_treat" rows="4">${esc(v.treatment||"")}</textarea></div>
+  <div class="right mt"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveTreat()">💾 Save & Mark Treated</button></div>`);
+}
+function saveTreat(){
+  const {pid,vid}=treatCtx;
+  updateP(pid,x=>{ const v=x.visits.find(v=>v.id===vid); v.complaints=val("t_comp"); v.treatment=val("t_treat"); EXAM.forEach(([k])=>v.examination[k]=val("t_"+k)); v.status="treated"; });
+  closeModal(); toast("Saved • marked treated"); DOC_TAB="treated"; render();
+}
+
+/* ============ PRINT PATIENT HISTORY ============ */
+function printHistory(pid){
+  const p=getP(pid); const age=displayAge(p);
+  const css=`body{font-family:Segoe UI,Arial,sans-serif;color:#1E293B;padding:28px} .b{color:#0EA5E9;font-size:26px;font-weight:800;margin:0} .s{color:#64748B;font-size:13px} .info{display:flex;flex-wrap:wrap;gap:8px 26px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px;margin:12px 0} .info span{display:block;font-size:11px;color:#0EA5E9;font-weight:700;text-transform:uppercase} .v{border:1px solid #E2E8F0;border-radius:10px;padding:14px;margin-bottom:10px} .vh{color:#0EA5E9;font-weight:700} ul{margin:4px 0 4px 18px}`;
+  const vis=(p.visits||[]).map((v,i)=>{const ex=v.examination||{};const pos=EXAM.filter(([k])=>(ex[k]||"").trim()).map(([k,l])=>`<li><b>${l}:</b> ${esc(ex[k])}</li>`).join("");return `<div class="v"><div class="vh">Visit ${i+1} • ${v.date_of_visit} • ${v.visit_type} • ${v.patient_category} patient</div><p><b>Vitals:</b> Ht ${esc(v.ht||"-")} | Wt ${esc(v.wt||"-")} | HC ${esc(v.hc||"-")} | BP ${esc(v.bp||"-")}</p><p><b>Complaints:</b> ${esc(v.complaints||"-")}</p>${pos?`<p><b>Examination:</b></p><ul>${pos}</ul>`:""}<p><b>Treatment:</b> ${esc(v.treatment||"-")}</p></div>`;}).join("");
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(p.name)} - History</title><style>${css}</style></head><body><p class="b">Vishwa Hospital</p><p class="s">Patient Visit History</p><div class="info"><div><span>Patient ID</span>${p.patient_id}</div><div><span>Name</span>${esc(p.name)}</div><div><span>Age</span>${esc(age)}</div><div><span>Sex</span>${esc(p.sex)}</div><div><span>Phone</span>${esc(p.phone||"-")}</div><div><span>DOB</span>${esc(p.dob||"-")}</div></div>${vis||"<p>No visits.</p>"}<script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>`;
+  const w=window.open("","_blank"); w.document.write(html); w.document.close();
+}
+
+/* ============ REPORTS MODULE ============ */
+let RS=addDays(-29), RE=todayISO();
+function addDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toLocaleDateString("en-CA"); }
+function reportData(){
+  const rows=[]; loadPatients().forEach(p=>{ (p.visits||[]).forEach(v=>{ const d=(v.date_of_visit||"").slice(0,10); if(d&&d>=RS&&d<=RE)rows.push({patient_id:p.patient_id,name:p.name,age:displayAge(p),sex:p.sex,date:d,type:v.visit_type,cat:v.patient_category}); }); });
+  rows.sort((a,b)=>a.date.localeCompare(b.date));
+  const s={total:rows.length,new:0,old:0,fresh:0,followup:0,subsequent:0};
+  rows.forEach(r=>{ if(r.cat==="new")s.new++;else s.old++; if(s[r.type]!=null)s[r.type]++; });
+  return {rows,s};
+}
+function reportsView(){
+  const {rows,s}=reportData();
+  return `<div class="card mb"><div class="flexb">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+      <div class="field"><label class="lbl">From</label><input type="date" id="rp_s" value="${RS}" onchange="RS=this.value;render()"/></div>
+      <div class="field"><label class="lbl">To</label><input type="date" id="rp_e" value="${RE}" onchange="RE=this.value;render()"/></div>
+      <button class="btn btn-o btn-sm" onclick="RS=todayISO();RE=todayISO();render()">Today</button>
+      <button class="btn btn-o btn-sm" onclick="RS=addDays(-6);RE=todayISO();render()">This Week</button>
+      <button class="btn btn-o btn-sm" onclick="RS=addDays(-29);RE=todayISO();render()">This Month</button>
+    </div>
+    <button class="btn btn-a" onclick="printReport()">🖨️ Print / Save PDF</button>
+  </div></div>
+  <div class="metrics">
+    ${metric("Total Attended",s.total)}${metric("New Patients",s.new)}${metric("Old Patients",s.old)}${metric("Fresh",s.fresh)}${metric("Follow-up",s.followup)}${metric("Subsequent",s.subsequent)}
+  </div>
+  <div class="card"><div class="flexb mb"><h3>Patient List</h3><span class="tiny">${rows.length} record(s)</span></div>
+  <div style="max-height:460px;overflow:auto"><table><tr><th>ID</th><th>Name</th><th>Age</th><th>Sex</th><th>Date</th><th>Type</th><th>Category</th></tr>
+  ${rows.length?rows.map(r=>`<tr><td class="mono">${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(r.age)}</td><td>${esc(r.sex)}</td><td class="mono tiny">${r.date}</td><td style="text-transform:capitalize">${r.type}</td><td>${r.cat==="new"?"New":"Old"}</td></tr>`).join(""):'<tr><td colspan="7" style="text-align:center;color:#94A3B8;padding:24px">No records for this range.</td></tr>'}</table></div></div>`;
+}
+function metric(l,v){ return `<div class="metric"><div class="m-l">${l}</div><div class="m-v">${v}</div></div>`; }
+function printReport(){
+  const {rows,s}=reportData();
+  const css=`body{font-family:Segoe UI,Arial,sans-serif;color:#1E293B;padding:28px}.b{color:#0EA5E9;font-size:26px;font-weight:800;margin:0}.s{color:#64748B;font-size:13px}.cards{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.c{border:1px solid #E2E8F0;border-radius:10px;padding:12px 16px;min-width:140px}.c .l{font-size:11px;text-transform:uppercase;color:#64748B;font-weight:700}.c .v{font-size:26px;font-weight:800}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#0EA5E9;color:#fff;text-align:left;padding:8px}td{padding:7px;border-bottom:1px solid #E2E8F0}`;
+  const cards=[["Total Attended",s.total],["New",s.new],["Old",s.old],["Fresh",s.fresh],["Follow-up",s.followup],["Subsequent",s.subsequent]].map(c=>`<div class="c"><div class="l">${c[0]}</div><div class="v">${c[1]}</div></div>`).join("");
+  const tr=rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.patient_id}</td><td>${esc(r.name)}</td><td>${esc(r.age)}</td><td>${esc(r.sex)}</td><td>${r.date}</td><td>${r.type}</td><td>${r.cat}</td></tr>`).join("");
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Vishwa Hospital Report</title><style>${css}</style></head><body><p class="b">Vishwa Hospital</p><p class="s">Patient Report — ${RS} to ${RE}</p><div class="cards">${cards}</div><h3>Patient List</h3><table><tr><th>#</th><th>ID</th><th>Name</th><th>Age</th><th>Sex</th><th>Date</th><th>Type</th><th>Category</th></tr>${tr||'<tr><td colspan=8>No records</td></tr>'}</table><script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>`;
+  const w=window.open("","_blank"); w.document.write(html); w.document.close();
+}
+
+/* ============ MANUAL BACKUP / RESTORE ============ */
+function backupData(){
+  const data={patients:loadPatients(),counter:JSON.parse(safeGetItem(LS_C)||"{}"),exported_at:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="vishwa_hospital_backup_"+todayISO()+".json"; a.click();
+  toast("Backup downloaded");
+}
+function restoreData(input){
+  const f=input.files[0]; if(!f)return; const rd=new FileReader();
+  rd.onload=e=>{ try{ const d=JSON.parse(e.target.result); if(!d.patients)throw 0; if(!confirm("This will REPLACE all current data with the backup. Continue?"))return; savePatients(d.patients); if(d.counter)safeSetItem(LS_C,JSON.stringify(d.counter)); toast("Data restored"); render(); }catch(err){ toast("Invalid backup file"); } };
+  rd.readAsText(f); input.value="";
+}
+
+/* ============ INTERFACE HELPERS ============ */
+function val(id){ const e=document.getElementById(id); return e?e.value.trim():""; }
+function showModal(html,wide){ const m=document.getElementById("modal"); m.className="modal"+(wide?" wide":""); m.innerHTML=html; document.getElementById("overlay").classList.add("show"); }
+function closeModal(){ document.getElementById("overlay").classList.remove("show"); }
+function afterRender(){}
+render();
+</script>
+  </body>
+</html>
