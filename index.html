@@ -638,8 +638,22 @@ function getP(pid){ return loadPatients().find(p=>p.patient_id===pid); }
 function updateP(pid,fn){ const arr=loadPatients(); const i=arr.findIndex(p=>p.patient_id===pid); if(i<0)return; fn(arr[i]); savePatients(arr); }
 
 /* ============ TABS NAVIGATION ============ */
-function setTab(t){ TAB=t; document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t)); render(); }
-function render(){ const v=document.getElementById("view"); if(TAB==="staff")v.innerHTML=staffView(); else if(TAB==="doctor")v.innerHTML=doctorView(); else if(TAB==="reports")v.innerHTML=reportsView(); else v.innerHTML=settingsView(); afterRender(); }
+function setTab(t){ 
+  TAB = t; 
+  document.querySelectorAll(".tab").forEach(b => {
+    b.classList.toggle("active", b.dataset.tab === t);
+  });
+  render(); 
+}
+
+function render(){ 
+  const v = document.getElementById("view"); 
+  if (TAB === "staff") v.innerHTML = staffView(); 
+  else if (TAB === "doctor") v.innerHTML = doctorView(); 
+  else if (TAB === "reports") v.innerHTML = reportsView(); 
+  else v.innerHTML = settingsView(); 
+  afterRender(); 
+}
 
 /* ============ AGE FORM FIELD ============ */
 function ageFieldHTML(prefix,dob,age){
@@ -754,7 +768,7 @@ function selectedCard(p){
 
 // DELETION PASSWORD: 654321
 async function deletePatient(pid){
-  const pw = prompt("Enter Settings Password (654321) to delete this record:");
+  const pw = prompt("Enter Password (654321) to delete this record:");
   if (pw !== "654321") {
     if (pw !== null) toast("Incorrect password - deletion cancelled");
     return;
@@ -1089,6 +1103,8 @@ function val(id){ const e=document.getElementById(id); return e?e.value.trim():"
 function showModal(html,wide){ const m=document.getElementById("modal"); m.className="modal"+(wide?" wide":""); m.innerHTML=html; document.getElementById("overlay").classList.add("show"); }
 function closeModal(){ document.getElementById("overlay").classList.remove("show"); }
 function afterRender(){}
+
+// INITIAL RENDER CALL
 render();
 </script>
   </body>
